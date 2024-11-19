@@ -1,7 +1,6 @@
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
-  directUrl = env("DIRECT_URL")
 }
  
 generator client {
@@ -11,45 +10,18 @@ generator client {
 model User {
   id            String          @id @default(cuid())
   name          String?
-  username      String @unique
-  surname       String?
   email         String?          @unique
   emailVerified DateTime?
   hashedPassword String?
   image         String?
-  completedOnboarding Boolean @default(false)
   accounts      Account[]
   sessions      Session[]
-  createdWorkspaces Workspace[] @relation("CreatedBy")
-  subscriptions Subscription[]
-  useCase UseCase?
-  createdTasks Task[] @relation("TaskCreatedByUser")
-  updatedTasks Task[] @relation("TaskUpdatedByUser")
-  savedTask savedTask[]
-  createdMindMaps MindMap[] @relation("MindMapCreatedByUser")
-  updatedMindMaps MindMap[] @relation("MindMapUpdatedByUser")
-  savedMindMaps savedMindMaps[]
-  pomodoroSettings PomodoroSettings[]
-  assignedToTask assignedToTask[]
-  assignedToMindMap assignedToMindMap[]
-  userNotifications Notification[] @relation("NotifyUser")
-  userCreatedNotifications Notification[] @relation("NotifyCreator")
-  messages Message[]
-}
-
-model savedMindMaps {
-  id String @id @default(cuid())
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId String
-  mindMap MindMap @relation(fields: [mindMapId], references: [id], onDelete: Cascade)
-  mindMapId String
-
  
 }
  
 model Account {
-  id                String @id @default(cuid())
-  userId            String @unique
+  id String @id @default(cuid())
+  userId            String @unique 
   type              String
   provider          String
   providerAccountId String @map("provider_account_id")
@@ -58,7 +30,7 @@ model Account {
   expires_at        Int?
   token_type        String?
   scope             String?
-  id_token          String? @db.Text
+  id_token          String?  @db.Text
   session_state     String?
  
   createdAt DateTime @default(now())
@@ -66,8 +38,9 @@ model Account {
  
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  @@unique([provider, providerAccountId])
-
+  @@unique([provider,providerAccountId])
+ 
+ 
 }
  
 model Session {
@@ -76,257 +49,15 @@ model Session {
   userId       String   @unique
   expires      DateTime
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+ 
+  
 }
  
 model VerificationToken {
-  identifier String
+  identifier String 
   token      String @unique
   expires    DateTime
-
-}
-
-
-enum UserPermission {
-  ADMIN
-  CAN_EDIT
-  READ_ONLY
-  OWNER
-}
-
-enum UseCase {
-  WORK
-  STUDY
-  PERSONAL_USE
-}
-
-enum NotifyType {
-  NEW_USER_IN_WORKSPACE
-  USER_LEFT_WORKSPACE
-  NEW_TASK
-  NEW_MIND_MAP
-  NEW_ROLE
-  NEW_ASSIGNMENT_TASK
-  NEW_ASSIGNMENT_MIND_MAP
-}
-
-model Notification {
-  id String @id @default(cuid())
-  user User @relation(name: "NotifyUser", fields: [userId], references: [id] , onDelete: Cascade)
-  userId String
-  notifyCreator User @relation(name: "NotifyCreator", fields: [notifyCreatorId], references: [id], onDelete: Cascade)
-  notifyCreatorId String
-  workspace Workspace? @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
-  workspaceId String
-  seen Boolean @default(false)
-  clicked Boolean @default(false)
-  createdDate DateTime @default(now())
-  notifyType NotifyType
-  newUserRole UserPermission?
-  taskId String?
-  mindMapId String?
-
-
-}
-
-model Conversation {
-  id String @id @default(cuid())
-  workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
-  workspaceId String @unique
-  messages Message[]
-}
-
-model Message {
-  id String @id @default(cuid())
-  conversation Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
-  conversationId String
-  sender User @relation(fields: [senderId], references: [id], onDelete: Cascade)
-  senderId String
-  content String
-  createdAt DateTime @default(now())
-  additionalResources additionalResource[]
-  edited Boolean @default(false)
-  updatedAt DateTime? @updatedAt
-}
-
-model additionalResource{
-  id String @id @default(cuid())
-
-  message Message? @relation(fields: [messageId], references: [id], onDelete: Cascade)
-  messageId String?
-  type AdditionalResourceTypes
-  name String
-  url String
-}
-
-enum AdditionalResourceTypes {
-  PDF
-  IMAGE
-}
-
-model Workspace {
-  id String @id @default(cuid())
-  name String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  creatorId String?
-  Creator User? @relation("CreatedBy", fields: [creatorId], references: [id], onDelete: Cascade)
-  subscribers Subscription[]
-  image String?
-  color CustomColors @default(BLUE)
-  inviteCode String @unique 
-  adminCode String @unique 
-  canEditCode String @unique 
-  readOnlyCode String @unique 
-  tasks Task[]
-  tags Tag[]
-  mindMaps MindMap[]
-  notification Notification[]
-  conversation Conversation?
-
-}
-
-
-model Task {
-  id String @id @default(cuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  updatedBy User? @relation(name: "TaskUpdatedByUser",fields: [updatedUserId], references: [id], onDelete: Cascade)
-  updatedUserId String?
-  creator User @relation(name: "TaskCreatedByUser",fields: [creatorId], references: [id], onDelete: Cascade)
-  creatorId String
-  workspace Workspace @relation(fields: [workspaceId],references: [id], onDelete: Cascade)
-  workspaceId String
-  title String
-  emoji String @default("1f9e0")
-  content Json?
-  tags Tag[]
-  taskDate TaskDate? @relation(fields: [dateId],references: [id], onDelete: Cascade)
-  dateId String?
-  savedTask savedTask[]
-  assignedToTask assignedToTask[]
-
-
-}
-
-
-model savedTask {
-  id String @id @default(cuid())
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId String
-  task Task @relation(fields: [taskId] ,references: [id], onDelete: Cascade)
-  taskId String
-
-}
-
-model PomodoroSettings {
-  id String @id @default(cuid())
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId String
-  workDuration Int @default(25)
-  shortBreakDuration Int @default(5)
-  longBreakDuration Int @default(15)
-  longBreakInterval Int @default(2)
-  rounds Int @default(3)
-  soundEffect PomodoroSoundEffect @default(BELL)
-  soundEffectVolume Float @default(0.5)
-
-}
-
-model assignedToTask {
-  id String @id @default(cuid())
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId String
-  task Task @relation(fields: [taskId],references: [id], onDelete: Cascade)
-  taskId String
-
-}
-
-model assignedToMindMap {
-  id String @id @default(cuid())
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId String
-  mindMap MindMap @relation(fields: [mindMapId],references: [id], onDelete: Cascade)
-  mindMapId String
-
-
-}
-
-
-enum PomodoroSoundEffect {
-  ANALOG
-  BIRD
-  CHURCH_BELL
-  DIGITAL
-  FANCY
-  BELL
-}
-
-model Tag {
-  id String @id @default(cuid())
-  name String
-  tasks Task[]
-  color CustomColors
-  workspace Workspace? @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
-  workspaceId String
-  mindMaps MindMap[]
-
-  
-}
-
-
-model TaskDate {
-  id String @id @default(cuid())
-  from String?
-  to String?
-  Task Task[]
-}
-
-
-enum CustomColors {
-  PURPLE
-  RED
-  GREEN
-  BLUE
-  PINK
-  YELLOW
-  ORANGE
-  CYAN
-  LIME
-  EMERALD
-  INDIGO
-  FUCHSIA
-}
-
-model Subscription {
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId String
-  workspace Workspace @relation(fields: [workspaceId],references: [id], onDelete: Cascade)
-  workspaceId String
-  userRole UserPermission @default(READ_ONLY)
-
-  @@id([userId, workspaceId])
  
+  @@unique([identifier,token])
 }
-
-
-model MindMap {
-  id String @id @default(cuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  updatedBy User? @relation(name: "MindMapUpdatedByUser", fields: [updatedUserId], references: [id], onDelete: Cascade)
-  creator User @relation(name: "MindMapCreatedByUser", fields: [creatorId], references: [id], onDelete: Cascade)
-  creatorId String
-  updatedUserId String?
-  workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
-  workspaceId String
-  content Json?
-  title String
-  emoji String @default("1f9e0")
-  tags Tag[]
-  savedMindMaps savedMindMaps[]
-  assignedToMindMap assignedToMindMap[]
-
-  @@index([workspaceId])
-  @@index([updatedUserId])
-  @@index([creatorId])
-}
+ 
