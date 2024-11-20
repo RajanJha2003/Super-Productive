@@ -1,19 +1,12 @@
 import type { Metadata } from "next";
-import localFont from "next/font/local";
+
 import "./globals.css";
 import { ThemeProvider } from "@/providers/ThemeProvider";
 import { notFound } from "next/navigation";
+import { NextIntlClientProvider } from "next-intl";
+import { getMessages } from "next-intl/server";
 
-const geistSans = localFont({
-  src: "./fonts/GeistVF.woff",
-  variable: "--font-geist-sans",
-  weight: "100 900",
-});
-const geistMono = localFont({
-  src: "./fonts/GeistMonoVF.woff",
-  variable: "--font-geist-mono",
-  weight: "100 900",
-});
+
 
 const locales = ["en", "te"];
 
@@ -32,17 +25,20 @@ export default async function RootLayout({
 
   const isValidLocale = locales.some((cur) => cur === locale);
   if (!isValidLocale) notFound();
+  const messages=await getMessages();
   return (
     <html  lang={locale} suppressHydrationWarning>
       <body
         className={`antialiased`}
       >
-        <ThemeProvider attribute="class"
+       <NextIntlClientProvider locale={locale} messages={messages} >
+       <ThemeProvider attribute="class"
             defaultTheme="system"
             enableSystem
             disableTransitionOnChange >
         {children}
         </ThemeProvider>
+       </NextIntlClientProvider>
       </body>
     </html>
   );
