@@ -20,7 +20,7 @@ const AuthCard = ({signInCard}:Props) => {
             <Image alt='' className='rounded-full object-cover self-center' width={50} height={50} src={"https://github.com/shadcn.png"} />
             <CardTitle className='pt-2'>
                 {
-                    signInCard ? t("SIGN_IN.TITLE"):t("SIGNUP_TITLE")
+                    signInCard ? t("SIGN_IN.TITLE"):t("SIGN_UP.TITLE")
                 }
 
             </CardTitle>
