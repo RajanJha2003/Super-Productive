@@ -3,7 +3,7 @@ import React from 'react'
 import { Card, CardDescription, CardHeader, CardTitle } from '../ui/card';
 import Image from 'next/image';
 import SignInCardContent from './SignInCardContent';
-import SignUpCardContent from './SignUpCardContent';
+import {SignUpCardContent} from './SignUpCardContent';
 import Link from 'next/link';
 
 interface Props{
