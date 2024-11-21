@@ -66,9 +66,7 @@ export const SignUpCardContent = () => {
       let errMsg = m("ERRORS.DEFAULT");
       if (typeof err === "string") {
         errMsg = err;
-      } else if (err instanceof Error) {
-        errMsg = err.message;
-      }
+      } 
       toast({
         title: errMsg,
         variant: "destructive",
