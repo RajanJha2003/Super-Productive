@@ -1,6 +1,9 @@
 import { useTranslations } from 'next-intl'
-import React from 'react'
+import React, { useState } from 'react'
 import AddUserImage from '../common/AddUserImage';
+import { useForm } from 'react-hook-form';
+import { imageSchema, ImageSchema } from '@/schema/imageSchema';
+import { zodResolver } from '@hookform/resolvers/zod';
 
 
 
@@ -8,6 +11,8 @@ interface Props{
   profileImage?:string | null;
 }
 const FirstStep = ({profileImage}:Props) => {
+
+  
   const t=useTranslations("ONBOARDING_FORM");
 
   return (
@@ -30,6 +35,9 @@ const FirstStep = ({profileImage}:Props) => {
           t("FIRST_STEP.PHOTO")
 }</p>
 <AddUserImage profileImage={profileImage} />
+
+
+  
 
 
       </div>
