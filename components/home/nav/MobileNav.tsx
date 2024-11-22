@@ -65,13 +65,13 @@ const MobileNav = () => {
               onClick={() => {
                 setOpen(false);
               }}
-              href={"/"}
+              href={"/sign-up"}
               className={`${buttonVariants({ variant: "default" })}`}
             >
               Sign up
             </Link>
             <Link
-              href={"/"}
+              href={"/sign-in"}
               onClick={() => {
                 setOpen(false);
               }}
