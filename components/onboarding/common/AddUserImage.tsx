@@ -75,7 +75,7 @@ const AddUserImage = ({profileImage,className}:Props) => {
                                 <Button type='button' className=' mb-1'>
                                   Choose a file
                                 </Button>
-                                <Input {...field} value={undefined} type='file' id='image' className='hidden' accept='image/*' />
+                                <Input {...field} value={undefined} type='file' id='image' className='hidden'  accept='image/*' />
 
                             </div>
                         </FormControl>
@@ -83,6 +83,10 @@ const AddUserImage = ({profileImage,className}:Props) => {
                 )}>
 
                 </FormField>
+                <div className='flex mt-5 w-full justify-center items-center gap-4'>
+                  
+
+                </div>
 
                 
 
