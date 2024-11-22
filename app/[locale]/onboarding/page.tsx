@@ -1,10 +1,15 @@
+import AdditionalInfoSection from '@/components/onboarding/AdditionalInfoSection';
+import { OnboardingFormProvider } from '@/context/OnBoardingForm';
 import { checkIfUserCompletedOnboarding } from '@/lib/checkIfUserCompletedOnboarding';
 import React from 'react'
 
 const page = async() => {
   const session = await checkIfUserCompletedOnboarding("/onboarding");
   return (
-    <div>page</div>
+    <OnboardingFormProvider session={session}>
+        <AdditionalInfoSection profileImage={session.user.image} />
+
+    </OnboardingFormProvider>
   )
 }
 
