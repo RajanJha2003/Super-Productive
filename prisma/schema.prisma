@@ -15,11 +15,18 @@ model User {
   emailVerified DateTime?
   hashedPassword String?
   image         String?
+  useCase UseCase?
   accounts      Account[]
   sessions      Session[]
  
 }
  
+enum UseCase {
+  WORK
+  STUDY
+  PERSONAL_USE
+}
+
 model Account {
   id String @id @default(cuid())
   userId            String @unique 
