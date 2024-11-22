@@ -1,4 +1,4 @@
-
+import { HomePageImage } from "@/types/extended";
 import {
   CalendarDays,
   Clock,
