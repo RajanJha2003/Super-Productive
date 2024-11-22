@@ -24,6 +24,7 @@ export const authOptions: NextAuthOptions = {
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
       async profile(profile) {
         const username = generateFromEmail(profile.email, 5);
+        console.log(username);
         return {
           id: profile.sub,
           username,
