@@ -13,6 +13,7 @@ import {
   homePageRolesAndSettingsImgs,
   homePageTasksImgs,
 } from "@/lib/constants";
+import { Footer } from './footer/Footer'
 
 const HomePage = () => {
   return (
@@ -82,6 +83,7 @@ const HomePage = () => {
         </main>
 
     </div>
+    <Footer />
     </>
   )
 }
