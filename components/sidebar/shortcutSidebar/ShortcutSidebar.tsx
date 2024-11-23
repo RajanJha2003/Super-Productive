@@ -2,6 +2,7 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { Workspace } from '@prisma/client';
 import React from 'react'
 import Top from './Top';
+import Workspaces from './workspaces/Workspaces';
 
 interface Props{
     userWorkspaces:Workspace[];
@@ -14,6 +15,7 @@ const ShortcutSidebar = ({userWorkspaces,createdWorkspaces}:Props) => {
         <ScrollArea className='max-h-[35rem]'>
             <div className='w-full space-y-3 p-1'>
                 <Top />
+                <Workspaces userWorkspaces={userWorkspaces} href="/dashboard/workspace"/>
 
             </div>
 
