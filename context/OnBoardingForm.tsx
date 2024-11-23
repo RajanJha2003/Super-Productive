@@ -34,6 +34,13 @@ export const OnboardingFormCtx = createContext<OnboardingFormContext | null>(
             surname:payload as string
           }
 
+          case ActionType.PROFILEIMAGE:
+            return {
+              ...state,
+              profileImage: payload as string | null | undefined,
+            };
+          
+
       default:
         return state;
 

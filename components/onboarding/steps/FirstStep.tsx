@@ -1,7 +1,7 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import AddUserImage from "../common/AddUserImage";
 import { useForm } from "react-hook-form";
 import { imageSchema, ImageSchema } from "@/schema/imageSchema";
@@ -23,6 +23,15 @@ interface Props {
 const FirstStep = ({ profileImage }: Props) => {
   const { name, surname, currentStep, dispatch } = useOnboardingForm();
 
+
+    useEffect(()=>{
+      dispatch({
+        type:ActionType.PROFILEIMAGE,
+        payload:profileImage as string | null | undefined
+      })
+    },[profileImage,dispatch])
+
+
   const form = useForm<AdditionalUserInfoFirstPart>({
     resolver: zodResolver(additionalUserInfoFirstPart),
     defaultValues: {
@@ -30,6 +39,8 @@ const FirstStep = ({ profileImage }: Props) => {
       surname: surname ? surname : "",
     },
   });
+
+
 
   const onSubmit = (data: AdditionalUserInfoFirstPart) => {
     dispatch({type:ActionType.NAME,payload:data.name})

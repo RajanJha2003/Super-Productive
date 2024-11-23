@@ -3,15 +3,21 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Form, FormControl, FormField, FormItem } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { UserAvatar } from '@/components/ui/user-avatar';
+import { useToast } from '@/hooks/use-toast';
+import { useUploadThing } from '@/lib/uploadthing';
 import { cn } from '@/lib/utils';
 import { imageSchema, ImageSchema } from '@/schema/imageSchema';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Camera, User } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
+import {User as UserType} from '@prisma/client'
+import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import React, { useMemo, useRef, useState } from 'react'
 import { useForm } from 'react-hook-form';
+import axios from 'axios';
+import { useSession } from 'next-auth/react';
 
 interface Props{
     profileImage?:string | null;
@@ -22,6 +28,10 @@ const AddUserImage = ({profileImage,className}:Props) => {
   const[open,setOpen]=useState(false);
   const inputRef=useRef<HTMLInputElement>(null);
   const router=useRouter();
+  const m=useTranslations("MESSAGES");
+  const {update}=useSession();
+
+  const {toast}=useToast();
 
     const [imagePreview,setImagePreview]=useState("");
   const form=useForm<ImageSchema>({
@@ -72,8 +82,78 @@ const AddUserImage = ({profileImage,className}:Props) => {
     },[imagePreview,profileImage])
 
 
-    const onSubmit=async(data:ImageSchema)=>{
+    const {startUpload,isUploading}=useUploadThing("imageUploader",{
+      onUploadError:(error)=>{
+        toast({
+          title:m("ERRORS.UPLOAD_TITLE"),
+          variant:"destructive"
+        })
 
+      },
+
+      onClientUploadComplete:(data)=>{
+        if(data) uploadProfileImage(data[0].url);
+        else{
+          toast({
+            title:m("ERRORS.IMAGE_PROFILE_UPDATE"),
+            variant:"destructive"
+          })
+        }
+      }
+    })
+
+    const {mutate:uploadProfileImage,isPending}=useMutation({
+      mutationFn:async(profileImage:string)=>{
+        const {data}=await axios.post("/api/profile/profileImage",{
+          profileImage
+        });
+
+        return data as UserType
+      },
+      onError:(error:any)=>{
+        toast({
+          title:m("ERRORS.IMAGE_PROFILE_UPDATE"),
+          variant:"destructive"
+        })
+      },
+      onSuccess:async()=>{
+        toast({
+          title:m("SUCCESS.IMAGE_PROFILE_UPDATE"),
+
+        })
+
+        setOpen(false);
+        await update();
+        router.refresh();
+      },
+      mutationKey:["uploadProfileImage"]
+    })
+
+    const {mutate:deleteProfileImage,isPending:isDeleting}=useMutation({
+      mutationFn:async()=>{
+        const {data}=await axios.post("/api/profile/delete_profile_image");
+        return data as UserType
+      },
+      onError:(error:any)=>{
+        toast({
+          title:m("ERRORS.IMAGE_PROFILE_UPDATE"),
+          variant:"destructive"
+        })
+      },
+      onSuccess:async()=>{
+        toast({
+          title:m("SUCCESS.IMAGE_PROFILE_UPDATE"),
+        });
+        await update();
+        router.refresh();
+      },
+      mutationKey:["deleteProfileImage"]
+    })
+
+
+    const onSubmit=async(data:ImageSchema)=>{
+     const image:File=data.image;
+     await startUpload([image]);
 
     }
   return (
@@ -127,7 +207,7 @@ const AddUserImage = ({profileImage,className}:Props) => {
                                 <Button onClick={()=>inputRef.current?.click()} type='button' className=' mb-1'>
                                   Choose a file
                                 </Button>
-                                <Input  {...field} value={undefined} type='file' id='image' className='hidden' onChange={onImageChange}  accept='image/*' />
+                                <Input  {...field} value={undefined} type='file' id='image' className='hidden' onChange={onImageChange} ref={inputRef}  accept='image/*' />
 
                             </div>
                         </FormControl>
@@ -154,3 +234,5 @@ const AddUserImage = ({profileImage,className}:Props) => {
 }
 
 export default AddUserImage
+
+
