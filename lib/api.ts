@@ -46,5 +46,5 @@ export const getUserAdminWorkspaces=async(userId:string)=>{
      if(!res.ok){
         return notFound()
      }
-   return res.json() as Promise<SettingsWorkspace>;
+   return res.json() as Promise<Workspace[]>;
 }
