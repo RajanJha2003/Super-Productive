@@ -24,7 +24,6 @@ export const authOptions: NextAuthOptions = {
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
       async profile(profile) {
         const username = generateFromEmail(profile.email, 5);
-        console.log(username);
         return {
           id: profile.sub,
           username,
@@ -96,49 +95,53 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
   secret: process.env.NEXTAUTH_SECRET,
-  callbacks:{
-    async session({session,token}){
-        if(token){
-            session.user.id=token.id,
-            session.user.name=token.name,
-            session.user.email=token.email,
-            session.user.image=token.picture,
-            session.user.username=token.username
-        }
+  callbacks: {
+    async session({ session, token }) {
+      if (token) {
+        session.user.id = token.id;
+        session.user.name = token.name;
+        session.user.email = token.email;
+        session.user.image = token.picture;
+        session.user.username = token.username;
+        session.user.surname = token.surname;
+        session.user.completedOnboarding = !!token.completedOnboarding;
+      }
 
-        const user=await db.user.findUnique({
-            where:{
-                id:token.id
-            }
-        })
+      const user = await db.user.findUnique({
+        where: {
+          id: token.id,
+        },
+      });
 
-        if(user){
-            session.user.image=user.image;
-            session.user.name=user.name?.toLowerCase();
-        }
+      if (user) {
+        session.user.image = user.image;
+        session.user.completedOnboarding = user.completedOnboarding;
+        session.user.username = user.username;
+      }
+     
 
-        return session;
+      return session;
     },
     async jwt({ token, user }) {
-        const dbUser = await db.user.findFirst({
-          where: {
-            email: token.email,
-          },
-        });
-  
-        if (!dbUser) {
-          token.id = user!.id;
-          return token;
-        }
-  
-        return {
-          id: dbUser.id,
-          name: dbUser.name,
-          email: dbUser.email,
-          picture: dbUser.image,
-        };
-      },
+      const dbUser = await db.user.findFirst({
+        where: {
+          email: token.email,
+        },
+      });
+
+      if (!dbUser) {
+        token.id = user!.id;
+        return token;
+      }
+
+      return {
+        id: dbUser.id,
+        username: dbUser.username,
+        email: dbUser.email,
+        picture: dbUser.image,
+      };
     },
-  };
-  
-  export const getAuthSession = () => getServerSession(authOptions);
+  },
+};
+
+export const getAuthSession = () => getServerSession(authOptions);
