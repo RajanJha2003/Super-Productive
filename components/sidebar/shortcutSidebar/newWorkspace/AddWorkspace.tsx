@@ -8,6 +8,7 @@ import Warning from '@/components/ui/warning';
 import { Plus } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import React, { useState } from 'react'
+import AddWorkspaceForm from './AddWorkspaceForm';
 
 interface Props{
     createdWorkspaces:number;
@@ -51,6 +52,7 @@ const AddWorkspace = ({createdWorkspaces}:Props) => {
                         <CreatedWorkspacesInfo className='text-left text-secondary-foreground' createNumber={createdWorkspaces} />
 
                     </Warning>
+                    <AddWorkspaceForm onSetOpen={setOpen} />
                 </DialogContent>
 
             </HoverCard>
