@@ -6,7 +6,7 @@ import { AppTitle } from '../ui/app-title';
 import {FirstStep} from './steps/FirstStep';
 import SecondStep from './steps/SecondStep';
 import ThirdStep from './steps/ThirdStep';
-import Finish from './steps/Finish';
+import {Finish} from './steps/Finish';
 
 interface Props{
     profileImage?:string | null;
