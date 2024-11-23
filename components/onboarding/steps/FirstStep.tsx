@@ -15,6 +15,7 @@ import { useOnboardingForm } from "@/context/OnBoardingForm";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
+import { ActionType } from "@/types/onBoardingContext";
 
 interface Props {
   profileImage?: string | null;
@@ -30,7 +31,11 @@ const FirstStep = ({ profileImage }: Props) => {
     },
   });
 
-  const onSubmit = (data: AdditionalUserInfoFirstPart) => {};
+  const onSubmit = (data: AdditionalUserInfoFirstPart) => {
+    dispatch({type:ActionType.NAME,payload:data.name})
+    dispatch({type:ActionType.SURNAME,payload:data.surname})
+    dispatch({type:ActionType.CHANGE_SITE,payload:currentStep+1})
+  };
 
   const t = useTranslations("ONBOARDING_FORM");
 

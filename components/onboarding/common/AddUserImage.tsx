@@ -9,7 +9,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Camera, User } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
-import React, { useState } from 'react'
+import { useRouter } from 'next/navigation';
+import React, { useMemo, useRef, useState } from 'react'
 import { useForm } from 'react-hook-form';
 
 interface Props{
@@ -18,16 +19,67 @@ interface Props{
 }
 
 const AddUserImage = ({profileImage,className}:Props) => {
+  const[open,setOpen]=useState(false);
+  const inputRef=useRef<HTMLInputElement>(null);
+  const router=useRouter();
 
     const [imagePreview,setImagePreview]=useState("");
   const form=useForm<ImageSchema>({
     resolver:zodResolver(imageSchema)
   })
     const t=useTranslations("CHANGE_PROFILE_IMAGE")
+
+    const onImageChange=(e:React.ChangeEvent<HTMLInputElement>)=>{
+      if(e.target.files && e.target.files[0]){
+        const selectedFile=e.target.files[0];
+        const result=imageSchema.safeParse({image:selectedFile});
+        if(result.success){
+          form.clearErrors("image");
+          form.setValue("image",selectedFile);
+          setImagePreview(URL.createObjectURL(e.target.files[0]))
+        }else{
+          const error=result.error.flatten().fieldErrors.image;
+          error?.forEach((error)=>form.setError("image",{message:error}))
+        }
+      }
+
+    }
+
+
+    const imageOptions=useMemo(()=>{
+      if(!imagePreview && profileImage){
+        return{
+          canDelete:true,
+          canSave:false
+        }
+      }else if(imagePreview && profileImage){
+        return{
+          canDelete:false,
+          canSave:true
+        }
+
+      }else if(imagePreview && !profileImage){
+        return{
+          canDelete:false,
+          canSave:true
+        }
+      }else{
+        return{
+          canDelete:false,
+          canSave:false
+        }
+      }
+    },[imagePreview,profileImage])
+
+
+    const onSubmit=async(data:ImageSchema)=>{
+
+
+    }
   return (
     <div className='w-full flex flex-col justify-center items-center gap-2'>
         <p className='text-sm text-muted-foreground'>Add a photo</p>
-        <Dialog>
+        <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
                 <Button className={cn("group relative bg-muted w-16 h-16 md:h-20 md:w-20 rounded-full flex justify-center items-center text-muted-foreground overflow-hidden",className)}>
                   {
@@ -67,15 +119,15 @@ const AddUserImage = ({profileImage,className}:Props) => {
           )}
 
           <Form {...form}>
-            <form>
+            <form onSubmit={form.handleSubmit(onSubmit)}>
                 <FormField control={form.control} name='image' render={({field})=>(
                     <FormItem>
                         <FormControl>
                             <div className='flex justify-center items-center'>
-                                <Button type='button' className=' mb-1'>
+                                <Button onClick={()=>inputRef.current?.click()} type='button' className=' mb-1'>
                                   Choose a file
                                 </Button>
-                                <Input {...field} value={undefined} type='file' id='image' className='hidden'  accept='image/*' />
+                                <Input  {...field} value={undefined} type='file' id='image' className='hidden' onChange={onImageChange}  accept='image/*' />
 
                             </div>
                         </FormControl>
