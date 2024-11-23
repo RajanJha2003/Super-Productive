@@ -8,7 +8,7 @@ const Top = () => {
         {
             topSidebarLinks.map((link,i)=>(
                 <SidebarLink key={`link_${i}`}
-                 icon={link.Icon}
+                 Icon={link.Icon}
                   hoverTextKey={link.hoverTextKey}
                   href={link.href}
                   include={link.include}
