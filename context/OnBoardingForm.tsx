@@ -46,6 +46,13 @@ export const OnboardingFormCtx = createContext<OnboardingFormContext | null>(
                 ...state,
                 useCase:payload as UseCase
               }
+
+              case ActionType.WORKSPACE_NAME: {
+                return {
+                  ...state,
+                  workspaceName: payload as string,
+                };
+              }
           
 
       default:
