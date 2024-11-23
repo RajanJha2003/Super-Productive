@@ -1,4 +1,5 @@
 import AdditionalInfoSection from '@/components/onboarding/AdditionalInfoSection';
+import {SummarySection} from '@/components/onboarding/SummarySection';
 import { OnboardingFormProvider } from '@/context/OnBoardingForm';
 import { checkIfUserCompletedOnboarding } from '@/lib/checkIfUserCompletedOnboarding';
 import { redirect } from 'next/navigation';
@@ -11,6 +12,7 @@ const page = async () => {
   return (
     <OnboardingFormProvider session={session}>
       <AdditionalInfoSection profileImage={session.user.image} />
+      <SummarySection />
     </OnboardingFormProvider>
   );
 };
