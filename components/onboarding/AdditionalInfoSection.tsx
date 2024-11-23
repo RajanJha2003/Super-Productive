@@ -3,7 +3,7 @@
 import { useOnboardingForm } from '@/context/OnBoardingForm';
 import React from 'react'
 import { AppTitle } from '../ui/app-title';
-import FirstStep from './steps/FirstStep';
+import {FirstStep} from './steps/FirstStep';
 import SecondStep from './steps/SecondStep';
 import ThirdStep from './steps/ThirdStep';
 import Finish from './steps/Finish';

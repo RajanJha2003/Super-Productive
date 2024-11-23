@@ -1,37 +1,35 @@
-"use client";
+import { Button } from "@/components/ui/button";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
 
-import { useTranslations } from "next-intl";
-import React, { useEffect, useState } from "react";
-import AddUserImage from "../common/AddUserImage";
-import { useForm } from "react-hook-form";
-import { imageSchema, ImageSchema } from "@/schema/imageSchema";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import {
   additionalUserInfoFirstPart,
   AdditionalUserInfoFirstPart,
 } from "@/schema/additionalUserInfoFirstPart";
-import { useOnboardingForm } from "@/context/OnBoardingForm";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { ArrowRight } from "lucide-react";
 import { ActionType } from "@/types/onBoardingContext";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { ArrowRight, User } from "lucide-react";
+import React, { useEffect } from "react";
+import { useForm } from "react-hook-form";
+import { AddUserImage } from "../common/AddUserImage";
+import { useSession } from "next-auth/react";
+import { useTranslations } from "next-intl";
+import { useOnboardingForm } from "@/context/OnBoardingForm";
 
 interface Props {
   profileImage?: string | null;
 }
-const FirstStep = ({ profileImage }: Props) => {
-  const { name, surname, currentStep, dispatch } = useOnboardingForm();
 
-
-    useEffect(()=>{
-      dispatch({
-        type:ActionType.PROFILEIMAGE,
-        payload:profileImage as string | null | undefined
-      })
-    },[profileImage,dispatch])
-
-
+export const FirstStep = ({ profileImage }: Props) => {
+  const session = useSession();
+  const { currentStep, name, surname, dispatch } = useOnboardingForm();
   const form = useForm<AdditionalUserInfoFirstPart>({
     resolver: zodResolver(additionalUserInfoFirstPart),
     defaultValues: {
@@ -39,16 +37,21 @@ const FirstStep = ({ profileImage }: Props) => {
       surname: surname ? surname : "",
     },
   });
+  const t = useTranslations("ONBOARDING_FORM");
 
-
+  useEffect(() => {
+    dispatch({
+      type: ActionType.PROFILEIMAGE,
+      payload: profileImage as string | null | undefined,
+    });
+  }, [profileImage, dispatch]);
 
   const onSubmit = (data: AdditionalUserInfoFirstPart) => {
-    dispatch({type:ActionType.NAME,payload:data.name})
-    dispatch({type:ActionType.SURNAME,payload:data.surname})
-    dispatch({type:ActionType.CHANGE_SITE,payload:currentStep+1})
+    
+    dispatch({ type: ActionType.NAME, payload: data.name! });
+    dispatch({ type: ActionType.SURNAME, payload: data.surname! });
+    dispatch({ type: ActionType.CHANGE_SITE, payload: currentStep + 1 });
   };
-
-  const t = useTranslations("ONBOARDING_FORM");
 
   return (
     <>
@@ -61,6 +64,7 @@ const FirstStep = ({ profileImage }: Props) => {
           <p>{t("FIRST_STEP.PHOTO")}</p>
           <AddUserImage profileImage={profileImage} />
         </div>
+
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
             <div className="space-y-1.8">
@@ -69,35 +73,43 @@ const FirstStep = ({ profileImage }: Props) => {
                 name="name"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="bg-muted">
+                    <FormLabel className="text-muted-foreground">
                       {t("FIRST_STEP.INPUTS.NAME")}
                     </FormLabel>
                     <FormControl>
-                      <Input {...field} className="bg-muted" placeholder={t("FIRST_STEP.PLACEHOLDER.NAME")} />
+                      <Input
+                        className="bg-muted"
+                        placeholder={t("FIRST_STEP.PLACEHOLDER.NAME")}
+                        {...field}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
-
-              <FormField control={form.control} name="surname" render={({field})=>(
-                <FormItem>
-                  <FormLabel className="text-muted-foreground">
-                    {t("FIRST_STEP.INPUTS.SURNAME")}
-                  </FormLabel>
-                  <FormControl>
-                    <Input {...field} className="bg-muted" placeholder={t("FIRST_STEP.PLACEHOLDER.SURNAME")} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )} />
+              <FormField
+                control={form.control}
+                name="surname"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-muted-foreground">
+                      {t("FIRST_STEP.INPUTS.SURNAME")}
+                    </FormLabel>
+                    <FormControl>
+                      <Input
+                        className="bg-muted"
+                        placeholder={t("FIRST_STEP.PLACEHOLDER.SURNAME")}
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
             </div>
             <Button className="w-full max-w-md  font-semibold">
-              {
-                t("NEXT_BTN")
-              }
-              <ArrowRight width={18} height={18} />
-
+              {t("NEXT_BTN")}
+              <ArrowRight className="" width={18} height={18} />
             </Button>
           </form>
         </Form>
@@ -105,5 +117,3 @@ const FirstStep = ({ profileImage }: Props) => {
     </>
   );
 };
-
-export default FirstStep;

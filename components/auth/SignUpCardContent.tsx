@@ -125,7 +125,7 @@ export const SignUpCardContent = () => {
           <div className="space-y-2">
             <Button
               disabled={isLoading}
-              className="w-full font-bold text-white"
+              className="w-full font-bold "
               type="submit"
             >
               {isLoading ? (

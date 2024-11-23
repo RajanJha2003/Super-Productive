@@ -1,6 +1,7 @@
 "use client";
 
 import { Action, ActionType, OnboardingFormContext, OnboardingFormReducer } from "@/types/onBoardingContext";
+import { UseCase } from "@prisma/client";
 import { Session } from "next-auth";
 import React, { createContext, useContext, useReducer } from "react";
 
@@ -39,6 +40,12 @@ export const OnboardingFormCtx = createContext<OnboardingFormContext | null>(
               ...state,
               profileImage: payload as string | null | undefined,
             };
+
+            case ActionType.USECASE:
+              return{
+                ...state,
+                useCase:payload as UseCase
+              }
           
 
       default:
