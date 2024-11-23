@@ -22,6 +22,18 @@ export const OnboardingFormCtx = createContext<OnboardingFormContext | null>(
 
       }
 
+      case ActionType.NAME:
+        return{
+          ...state,
+          name:payload as string
+        }
+
+        case ActionType.SURNAME:
+          return{
+            ...state,
+            surname:payload as string
+          }
+
       default:
         return state;
 
