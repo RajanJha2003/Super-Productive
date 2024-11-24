@@ -79,7 +79,24 @@ const AddWorkspaceForm = ({onSetOpen}:Props) => {
 
 
 
-    const onSubmit = (data:WorkspaceSchema) => {
+    const onSubmit = async(data:WorkspaceSchema) => {
+      setUploadError(false);
+      const image:File|undefined|null=data.file;
+      let workspaceImageUrl:null|string=null;
+      if(image){
+        const data=await startUpload([image]);
+        if(data){
+          workspaceImageUrl=data[0].url;
+        }
+      }
+
+      if(uploadError) return;
+
+      newWorkspace({
+        workspaceName:data.workspaceName,
+        file:workspaceImageUrl
+
+      })
     }
   return (
     <Form {...form}>
