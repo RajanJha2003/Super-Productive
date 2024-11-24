@@ -4,6 +4,7 @@ import React from 'react'
 import Top from './Top';
 import Workspaces from './workspaces/Workspaces';
 import AddWorkspace from './newWorkspace/AddWorkspace';
+import Bottom from './Bottom';
 
 interface Props{
     userWorkspaces:Workspace[];
@@ -22,6 +23,7 @@ const ShortcutSidebar = ({userWorkspaces,createdWorkspaces}:Props) => {
             </div>
 
         </ScrollArea>
+        <Bottom />
 
     </div>
   )
