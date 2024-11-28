@@ -1,8 +1,28 @@
+"use client"
+import { useTranslations } from 'next-intl'
 import React from 'react'
 
-const WorkspaceOptions = () => {
+interface Props{
+    workspaceId:string
+}
+
+const WorkspaceOptions = ({workspaceId}:Props) => {
+
+  const t=useTranslations("SIDEBAR.WORKSPACE_OPTIONS")
   return (
-    <div>WorkspaceOptions</div>
+    <div>
+    <div>
+    <p>
+      {
+        t("SHORTCUTS")
+      }
+    </p>
+    {
+      
+    }
+    </div>
+
+    </div>
   )
 }
 
