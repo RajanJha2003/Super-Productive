@@ -42,33 +42,33 @@ const WorkspaceComponent = ({workspace:{id,image,name,color},href}:Props) => {
       }, [color]);
   
     return (
-    <HoverCard openDelay={250} closeDelay={250}>
-        <HoverCardTrigger asChild>
-            <ActiveLink
-             include={`/${href}/${id}`}
-              workspaceIcon
-               className={`text-white font-bold ${!image && workspaceColor}`}
-                variant={image ?"ghost":"default"}
-                href={`/${href}/${id}`}
-                size={"icon"}
-                
-                >
-                    {
-                        image ? (
-                            <Image src={image} priority className='w-full h-full object-cover rounded-md' alt='workspace image' height={300} width={300}/>
-
-                        ):(
-                            <p>{name[0].toUpperCase()}</p>
-                        )
-                    }
-                </ActiveLink>
-
-        </HoverCardTrigger>
-        <HoverCardContent align='start'>
-            <span>{name}</span>
-
-        </HoverCardContent>
-
+      <HoverCard openDelay={250} closeDelay={250}>
+      <HoverCardTrigger asChild>
+        <ActiveLink
+          include={`/${href}/${id}`}
+          workspaceIcon
+          className={`text-white font-bold ${!image && workspaceColor}`}
+          variant={image ? "ghost" : "default"}
+          href={`${href}/${id}`}
+          size={"icon"}
+        >
+          {image ? (
+            <Image
+              priority
+              className="w-full h-full object-cover rounded-md"
+              src={image}
+              alt="workspace image"
+              height={300}
+              width={300}
+            />
+          ) : (
+            <p>{name[0].toUpperCase()}</p>
+          )}
+        </ActiveLink>
+      </HoverCardTrigger>
+      <HoverCardContent align="start">
+        <span>{name}</span>
+      </HoverCardContent>
     </HoverCard>
   )
 }

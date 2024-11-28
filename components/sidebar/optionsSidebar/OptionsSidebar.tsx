@@ -7,6 +7,7 @@ import { usePathname } from 'next/navigation';
 import React from 'react'
 import Settings from './settingsOptions/Settings';
 import CreatedWorkspacesInfo from '@/components/common/CreatedWorkspacesInfo';
+import WorkspaceOptions from './workspaceOptions/WorkspaceOptions';
 
 
 interface Props{
@@ -54,6 +55,16 @@ const OptionsSidebar = ({createdWorkspaces,userAdminWorkspaces,userWorkspaces}:P
 
         )
       }
+
+{(pathname === `/dashboard/workspace/${workspaceId}` ||
+          pathname ===
+            `/dashboard/workspace/${workspaceId}/tasks/task/${urlAdditionalId}` ||
+          pathname ===
+            `/dashboard/workspace/${workspaceId}/mind-maps/mind-map/${urlAdditionalId}` ||
+          pathname ===
+            `/dashboard/workspace/${workspaceId}/chat/${chatId}`) && (
+          <WorkspaceOptions workspaceId={workspaceId} />
+        )}
       
     </ScrollArea>
 
