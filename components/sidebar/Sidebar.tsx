@@ -12,6 +12,8 @@ const Sidebar = async() => {
     getWorkspaces(session.user.id),
     getUserAdminWorkspaces(session.user.id)
 
+    
+
 
   ])
 
