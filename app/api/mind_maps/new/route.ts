@@ -19,14 +19,14 @@ export async function POST(request:Request){
           }
 
 
-          const newTaskSchema=z.object({
+          const newMindMapSchema=z.object({
             workspaceId:z.string(),
           })
 
 
           const body:unknown=await request.json();
 
-          const result=newTaskSchema.safeParse(body);
+          const result=newMindMapSchema.safeParse(body);
 
           if(!result.success){
             return NextResponse.json("ERRORS.WRONG_DATA",{
@@ -66,26 +66,19 @@ export async function POST(request:Request){
        }
 
 
-       const date=await db.taskDate.create({
-        data:{
-          from:undefined,
-          to:undefined,
-        }
-       })
 
-       const task=await db.task.create({
+       const mindMap=await db.mindMap.create({
         data:{
-          title:"",
-          creatorId:user.id,
-          workspaceId,
-          dateId:date.id
+         workspaceId,
+         creatorId:session.user.id,
+         title:""
         }
        })
 
 
-       await db.task.update({
+       await db.mindMap.update({
         where:{
-          id:task.id
+          id:mindMap.id
         },
         data:{
           updatedUserId:session.user.id
@@ -107,7 +100,7 @@ export async function POST(request:Request){
         userId:user.userId,
         workspaceId,
         notifyType:NotifyType.NEW_TASK,
-        taskId:task.id
+        minMapId:mindMap.id
        }))
 
 
@@ -118,10 +111,10 @@ export async function POST(request:Request){
         data:filterNotificationsData
        })
 
-     
+      
 
 
-       return NextResponse.json(task,{
+       return NextResponse.json(mindMap,{
         status:200
        })
            

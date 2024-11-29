@@ -5,11 +5,11 @@ import { useToast } from "./use-toast";
 import { useRouter } from "next/navigation";
 import { useMutation } from "@tanstack/react-query";
 import axios, { AxiosError } from "axios";
-import { Task } from "@prisma/client";
+import { MindMap, Task } from "@prisma/client";
 
 
 
-export const useNewTask=(workspaceId:string)=>{
+export const useNewMindMap=(workspaceId:string)=>{
     const m=useTranslations("MESSAGES");
 
     const {toast}=useToast();
@@ -17,18 +17,18 @@ export const useNewTask=(workspaceId:string)=>{
 
     const {mutate:newTask,isPending}=useMutation({
         mutationFn:async()=>{
-            const {data}=await axios.post(`/api/task/new`,{
+            const {data}=await axios.post(`/api/mind_maps/new`,{
                 workspaceId
             })
             return data;
         },
-        onSuccess:(data:Task)=>{
+        onSuccess:(data:MindMap)=>{
             toast({
-                title:m("SUCCESS.SUCCESS_TASK_ADDED"),
+                title:m("SUCCESS.MIND_MAP_ADDED"),
                 
             })
 
-            router.push(`/dashboard/workspace/${workspaceId}/tasks/task/${data.id}/edit`)
+            router.push(`/dashboard/workspace/${workspaceId}/mind-maps/mind-map/${data.id}/edit`)
         },
         onError:(err:AxiosError)=>{
 
@@ -40,7 +40,7 @@ export const useNewTask=(workspaceId:string)=>{
                 
             })
         },
-        mutationKey:["newTask"]
+        mutationKey:["newMindMap"]
     })
 
 
