@@ -5,6 +5,7 @@ import CreatedWorkspacesInfo from "@/components/common/CreatedWorkspacesInfo";
 import { Workspace } from "@prisma/client";
 import WorkspaceOptions from "./workspaceOptions/WorkspaceOptions";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import PomodoroLinks from "./pomodro/PomodoroLinks";
 
 interface Props {
   createdWorkspaces: number;
@@ -60,11 +61,12 @@ export const OptionsSidebar = ({
             `${basePath}/dashboard/workspace/${workspaceId}/tasks/task/${urlAdditionalId}` ||
           pathname ===
             `${basePath}/dashboard/workspace/${workspaceId}/mind-maps/mind-map/${urlAdditionalId}` ||
-          pathname === `${basePath}/dashboard/workspace/${workspaceId}/chat/${chatId}`) ? (
+          pathname === `${basePath}/dashboard/workspace/${workspaceId}/chat/${chatId}`)  && (
           <WorkspaceOptions workspaceId={workspaceId} />
-        ) : (
-          <p>null</p>
-        )}
+        ) }
+
+{(pathname === `${basePath}/dashboard/pomodoro` ||
+          pathname === `${basePath}/dashboard/pomodoro/settings`) && <PomodoroLinks />}
       </ScrollArea>
 
       <CreatedWorkspacesInfo createNumber={createdWorkspaces} />
