@@ -15,7 +15,7 @@ export const useNewMindMap=(workspaceId:string)=>{
     const {toast}=useToast();
     const router=useRouter();
 
-    const {mutate:newTask,isPending}=useMutation({
+    const {mutate:newMindMap,isPending}=useMutation({
         mutationFn:async()=>{
             const {data}=await axios.post(`/api/mind_maps/new`,{
                 workspaceId
@@ -24,7 +24,7 @@ export const useNewMindMap=(workspaceId:string)=>{
         },
         onSuccess:(data:MindMap)=>{
             toast({
-                title:m("SUCCESS.MIND_MAP_ADDED"),
+                title:m("SUCCESS.SUCCESS_MIND_MAP_ADDED"),
                 
             })
 
@@ -44,7 +44,7 @@ export const useNewMindMap=(workspaceId:string)=>{
     })
 
 
-    return {newTask,isPending}
+    return {newMindMap,isPending}
 
 
 

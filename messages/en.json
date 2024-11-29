@@ -141,7 +141,8 @@
         "ONBOARDING_COMPLETE": "Welcome to Super Productive!",
         "PASSWORD_CHANGED": "Password has been changed!",
         "NEW_WORKSPACE": "The workspace has been created!",
-        "SUCCESS_TASK_ADDED": "The task has been created!"
+        "SUCCESS_TASK_ADDED": "The task has been created!",
+        "SUCCESS_MIND_MAP_ADDED": "The mind map has been created!"
       },
       "PENDING": {
         "LOADING": "Please wait"
