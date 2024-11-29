@@ -1,3 +1,4 @@
+import DashboardHeader from '@/components/header/DashboardHeader';
 import { getInitialHomeRecentActivity } from '@/lib/api';
 import { checkIfUserCompletedOnboarding } from '@/lib/checkIfUserCompletedOnboarding';
 import React from 'react'
@@ -10,7 +11,10 @@ const page = async() => {
     session.user.id
   );
   return (
-    <div>page</div>
+    <>
+    <DashboardHeader />
+    
+    </>
   )
 }
 
