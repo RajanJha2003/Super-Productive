@@ -1,6 +1,7 @@
-import { SettingsWorkspace } from "@/types/extended";
+import { HomeRecentActivity, SettingsWorkspace } from "@/types/extended";
 import { Workspace } from "@prisma/client";
 import { notFound } from "next/navigation";
+import { ACTIVITY_PER_PAGE } from "./constants";
 
 
 export const domain=process.env.NODE_ENV!=="production"
@@ -48,3 +49,20 @@ export const getUserAdminWorkspaces=async(userId:string)=>{
      }
    return res.json() as Promise<Workspace[]>;
 }
+
+
+export const getInitialHomeRecentActivity = async (userId: string) => {
+   const res = await fetch(
+     `${domain}/api/home-page/get?userId=${userId}&page=${1}&take=${ACTIVITY_PER_PAGE}`,
+     {
+       method: "GET",
+       cache: "no-store",
+     }
+   );
+ 
+   if (!res.ok) {
+     return notFound();
+   }
+ 
+   return res.json() as Promise<HomeRecentActivity[]>;
+ };
