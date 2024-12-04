@@ -35,7 +35,7 @@ const DashboardHeader = async({addManualRoutes,className,children,workspaceHref,
           username={session?.user.username!}
           name={session?.user.name}
           surname={session?.user.surname}
-          showOnlyOnPath="/dashboard"
+          showOnlyOnPath="/en/dashboard"
         />
 
         </div>
