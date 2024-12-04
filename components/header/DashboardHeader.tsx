@@ -5,6 +5,7 @@ import OpenSidebar from './OpenSidebar';
 import Welcoming from '../common/Welcoming';
 import { BackBtn } from './BackBtn';
 import { SavingStatus } from './SavingStatus';
+import BreadCrumbNav from './BreadCrumbNav';
 
 interface Props {
     addManualRoutes?: {
@@ -46,6 +47,9 @@ const DashboardHeader = async({addManualRoutes,className,children,workspaceHref,
 
         {
           showingSavingStatus && <SavingStatus />
+        }
+        {
+          !hideBreadCrumb && <BreadCrumbNav addManualRoutes={addManualRoutes} workspaceHref={workspaceHref} />
         }
 
 
