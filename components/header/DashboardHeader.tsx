@@ -3,6 +3,8 @@ import { cn } from '@/lib/utils';
 import React from 'react'
 import OpenSidebar from './OpenSidebar';
 import Welcoming from '../common/Welcoming';
+import { BackBtn } from './BackBtn';
+import { SavingStatus } from './SavingStatus';
 
 interface Props {
     addManualRoutes?: {
@@ -37,6 +39,16 @@ const DashboardHeader = async({addManualRoutes,className,children,workspaceHref,
           surname={session?.user.surname}
           showOnlyOnPath="/en/dashboard"
         />
+        {
+          showBackBtn && <BackBtn />
+
+        }
+
+        {
+          showingSavingStatus && <SavingStatus />
+        }
+
+
 
         </div>
 
