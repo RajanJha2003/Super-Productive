@@ -6,6 +6,7 @@ import Welcoming from '../common/Welcoming';
 import { BackBtn } from './BackBtn';
 import { SavingStatus } from './SavingStatus';
 import BreadCrumbNav from './BreadCrumbNav';
+import NotificationContainer from '../notifications/NotificationContainer';
 
 interface Props {
     addManualRoutes?: {
@@ -54,6 +55,18 @@ const DashboardHeader = async({addManualRoutes,className,children,workspaceHref,
 
 
 
+        </div>
+
+
+        <div className='flex items-center gap-1 sm:gap-2'>
+
+          <div className='flex flex-wrap items-center gap-0.5'>
+
+            {children}
+
+            <NotificationContainer userId={session?.user.id} />
+            
+          </div>
         </div>
 
 
