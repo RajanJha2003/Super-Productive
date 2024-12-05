@@ -5,6 +5,9 @@ import React, { useMemo } from 'react'
 import { Card, CardContent } from '../ui/card';
 import { ReadOnlyEmoji } from '../common/ReadOnlyEmoji';
 import { StarSvg } from '../common/StarSvg';
+import { UserHoverInfo } from '../common/UserHoverInfoCard';
+import { cn } from '@/lib/utils';
+import { buttonVariants } from '../ui/button';
 
 
 interface Props{
@@ -62,7 +65,17 @@ const HomeRecentActivityItem = ({activityItem:{
                                     c("EDITED_ITEM_SENTENCE.BY")
                                 }
                                 <div className='flex items-center gap-1'>
-                                    
+                                    <UserHoverInfo className='px-0' user={updated.by}/>
+                                    <p>
+                                        {c("EDITED_ITEM_SENTENCE.IN")}{" "}
+
+                                        <Link className={cn(`${buttonVariants({
+                                            variant:"link",
+                                        })} px-0`)} href={`/dashboard/workspace/${workspaceId}`}>
+                                        {workspaceName}
+                                        </Link>
+                                    </p>
+
 
                                 </div>
 
