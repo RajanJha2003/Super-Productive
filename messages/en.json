@@ -482,6 +482,7 @@
         "USERNAME_PLACEHOLDER": "Username",
         "FIRST_NAME_PLACEHOLDER": "First name",
         "SURNAME_PLACEHOLDER": "Surname",
+        "PENDING_BTN":"Pending",
         "LANG": "LANGUAGE",
         "SEARCH_LANGUAGE": "Search language...",
         "SELECT_LANGUAGE": "Select language",

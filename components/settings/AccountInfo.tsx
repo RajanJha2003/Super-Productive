@@ -1,107 +1,108 @@
 "use client";
 
-import { useToast } from '@/hooks/use-toast';
-import { useChangeLocale } from '@/hooks/useChangeLocale';
-import { accountInfoSettingsSchema, AccountInfoSettingsSchema } from '@/schema/accountInfoSettingsSchema';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useMutation } from '@tanstack/react-query';
-import axios, { AxiosError, AxiosResponse } from 'axios';
-import { Session } from 'next-auth';
-import { useSession } from 'next-auth/react';
-import { useTranslations, useLocale } from 'next-intl';
-import { useRouter } from 'next/navigation';
-import React from 'react'
-import { useForm } from 'react-hook-form';
-import { Card, CardContent } from '../ui/card';
-import { AddUserImage } from '../onboarding/common/AddUserImage';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '../ui/form';
-import { Input } from '../ui/input';
+import { useToast } from "@/hooks/use-toast";
+import { useChangeLocale } from "@/hooks/useChangeLocale";
+import { accountInfoSettingsSchema, AccountInfoSettingsSchema } from "@/schema/accountInfoSettingsSchema";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation } from "@tanstack/react-query";
+import axios, { AxiosError, AxiosResponse } from "axios";
+import { Session } from "next-auth";
+import { useSession } from "next-auth/react";
+import { useTranslations, useLocale } from "next-intl";
+import { useRouter } from "next/navigation";
+import React from "react";
+import { useForm } from "react-hook-form";
+import { Card, CardContent } from "../ui/card";
+import { AddUserImage } from "../onboarding/common/AddUserImage";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "../ui/form";
+import { Input } from "../ui/input";
 import {
-    Popover,
-    PopoverContent,
-    PopoverTrigger,
-  } from "@/components/ui/popover";
-  import {
-    Command,
-    CommandEmpty,
-    CommandGroup,
-    CommandInput,
-    CommandItem,
-    CommandList,
-  } from "@/components/ui/command";
-import { Button } from '../ui/button';
-import { cn } from '@/lib/utils';
-import { Check, ChevronsUpDown } from 'lucide-react';
-import { LoadingState } from '../ui/loadingState';
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/components/ui/command";
+import { Button } from "../ui/button";
+import { cn } from "@/lib/utils";
+import { Check, ChevronsUpDown } from "lucide-react";
+import { LoadingState } from "../ui/loadingState";
 
 interface Props {
-    session: Session;
-  }
+  session: Session;
+}
 
-
-  const languages = [
-    {
-      label: "English",
-      value: "en",
-    },
-    {
-      label: "Telugu",
-      value: "te",
-    },
-  ] as const;
+const languages = [
+  {
+    label: "English",
+    value: "en",
+  },
+  {
+    label: "Telugu",
+    value: "te",
+  },
+] as const;
 
 const AccountInfo = ({
-    session: {
-      user: { image, name, surname, username },
+  session: {
+    user: { image, name, surname, username },
+  },
+}: Props) => {
+  const t = useTranslations("SETTINGS");
+  const m = useTranslations("MESSAGES");
+  const lang = useLocale();
+  const { toast } = useToast();
+  const { update } = useSession();
+  const router = useRouter();
+
+  const form = useForm<AccountInfoSettingsSchema>({
+    resolver: zodResolver(accountInfoSettingsSchema),
+    defaultValues: {
+      username: username!,
+      language: lang,
+      name: name || "",
+      surname: surname || "",
     },
-  }: Props) => {
+  });
 
-    const t = useTranslations("SETTINGS");
-    const m = useTranslations("MESSAGES");
-    const lang = useLocale();
-    const { toast } = useToast();
-    const { update } = useSession();
-    const router = useRouter();
-    const form = useForm<AccountInfoSettingsSchema>({
-      resolver: zodResolver(accountInfoSettingsSchema),
-      defaultValues: {
-        username: username!,
-        language: lang,
-        name: name ? name : "",
-        surname: surname ? surname : "",
-      },
-    });
-  
-    const { onSelectChange } = useChangeLocale();
+  const { onSelectChange } = useChangeLocale();
 
-    const { mutate: editProfile, isPending } = useMutation({
-        mutationFn: async (updatedData: AccountInfoSettingsSchema) => {
-          const { data } = (await axios.post(
-            "/api/profile/edit",
-            updatedData
-          )) as AxiosResponse<AccountInfoSettingsSchema>;
-    
-          return data;
-        },
-        onError: (err: AxiosError) => {
-          const error = err?.response?.data ? err.response.data : "ERRORS.DEFAULT";
-    
-          toast({
-            title: m(error),
-            variant: "destructive",
-          });
-        },
-        onSuccess: async (res: AccountInfoSettingsSchema) => {
-          if (res.language !== lang) onSelectChange(res.language as "te" | "en");
-          await update();
-          router.refresh();
-        },
-        mutationKey: ["profileEdit"],
+  const { mutate: editProfile, isPending } = useMutation({
+    mutationFn: async (updatedData: AccountInfoSettingsSchema) => {
+      const { data } = (await axios.post(
+        "/api/profile/edit",
+        updatedData
+      )) as AxiosResponse<AccountInfoSettingsSchema>;
+
+      return data;
+    },
+    onError: (err: AxiosError) => {
+      const error = err?.response?.data ? err.response.data : "ERRORS.DEFAULT";
+
+      toast({
+        title: m(error),
+        variant: "destructive",
       });
-    
-      const onSubmit = (data: AccountInfoSettingsSchema) => {
-        editProfile(data);
-      };
+    },
+    onSuccess: async (res: AccountInfoSettingsSchema) => {
+      if (res.language !== lang) onSelectChange(res.language as "te" | "en");
+      await update();
+      form.reset(res); // Reset the form values with the updated data
+      router.refresh();
+    },
+    mutationKey: ["profileEdit"],
+  });
+
+  const onSubmit = (data: AccountInfoSettingsSchema) => {
+    editProfile(data);
+  };
+
   return (
     <Card className="bg-background border-none shadow-none">
       <CardContent>
@@ -261,7 +262,7 @@ const AccountInfo = ({
         </Form>
       </CardContent>
     </Card>
-  )
-}
+  );
+};
 
-export default AccountInfo
+export default AccountInfo;
