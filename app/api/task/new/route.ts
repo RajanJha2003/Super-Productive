@@ -115,7 +115,7 @@ export async function POST(request:Request){
 
 
        await db.notification.createMany({
-        data:filterNotificationsData
+        data:notificationsData
        })
 
      
