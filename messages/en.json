@@ -491,6 +491,7 @@
         "DELETE_LABEL": "DELETE MY ACCOUNT AND DATA",
         "DELETE_PLACEHOLDER": "Confirm your email",
         "DELETE_BTN": "Delete",
+        "NO_LANGUAGE": "No language selected",
         "DIALOG": {
           "TITLE": "Delete account",
           "DESC": "You will loose access to all your workspaces and projects",
