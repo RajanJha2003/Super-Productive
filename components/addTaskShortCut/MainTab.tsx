@@ -9,7 +9,7 @@ import { EmojiSelector } from '../common/EmojiSelector';
 
 import TextareaAutosize from 'react-textarea-autosize';
 import CalendarTask from './CalendarTask';
-import ActiveWorkspaceInfo from './ActiveWorkspaceInfo';
+import {ActiveWorkspaceInfo} from './ActiveWorkspaceInfo';
 
 
 interface Props {

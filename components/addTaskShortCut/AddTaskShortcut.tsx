@@ -267,7 +267,7 @@ const AddTaskShortcut = ({userId}:Props) => {
                         disabled={
                           !activeWorkspace || title.length === 0 || isPending
                         }
-                        className="w-full text-white"
+                        className="w-full "
                       >
                         {isPending ? (
                           <LoadingState loadingText={t("BTN_PENDING")} />
@@ -279,7 +279,7 @@ const AddTaskShortcut = ({userId}:Props) => {
                       <Button
                         size={"lg"}
                         onClick={() => setOpen(false)}
-                        className="w-full text-white"
+                        className="w-full"
                       >
                         {t("BTN_NO_WORKSPACES")}
                       </Button>
