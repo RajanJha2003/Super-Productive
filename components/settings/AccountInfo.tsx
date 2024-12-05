@@ -251,7 +251,7 @@ const AccountInfo = ({
                 />
               </div>
             </div>
-            <Button disabled={isPending} className="text-black" type="submit">
+            <Button disabled={isPending} className="" type="submit">
               {isPending ? (
                 <LoadingState loadingText={t("ACCOUNT.PENDING_BTN")} />
               ) : (
