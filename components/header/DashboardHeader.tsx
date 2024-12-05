@@ -7,6 +7,7 @@ import { BackBtn } from './BackBtn';
 import { SavingStatus } from './SavingStatus';
 import BreadCrumbNav from './BreadCrumbNav';
 import NotificationContainer from '../notifications/NotificationContainer';
+import User from './User';
 
 interface Props {
     addManualRoutes?: {
@@ -67,6 +68,7 @@ const DashboardHeader = async({addManualRoutes,className,children,workspaceHref,
             <NotificationContainer userId={session?.user.id} />
             
           </div>
+          <User profileImage={session?.user.image} username={session?.user.username!} email={session?.user.email!} />
         </div>
 
 
