@@ -10,6 +10,8 @@
   },
   "dependencies": {
     "@auth/prisma-adapter": "^2.7.4",
+    "@emoji-mart/data": "^1.2.1",
+    "@emoji-mart/react": "^1.1.1",
     "@hookform/resolvers": "^3.9.1",
     "@mantine/hooks": "^7.14.1",
     "@prisma/client": "^5.21.1",
@@ -48,6 +50,7 @@
     "react-day-picker": "^9.4.1",
     "react-dom": "^18.3.1",
     "react-hook-form": "^7.53.1",
+    "react-textarea-autosize": "^8.5.5",
     "sonner": "^1.7.0",
     "tailwind-merge": "^2.5.4",
     "tailwindcss-animate": "^1.0.7",
