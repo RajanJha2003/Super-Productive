@@ -8,6 +8,8 @@ import Warning from '../ui/warning';
 import { EmojiSelector } from '../common/EmojiSelector';
 
 import TextareaAutosize from 'react-textarea-autosize';
+import CalendarTask from './CalendarTask';
+import ActiveWorkspaceInfo from './ActiveWorkspaceInfo';
 
 
 interface Props {
@@ -48,15 +50,35 @@ const MainTab = ({renderedEmoji,activeWorkspace,date,title,onSelectEmojiHandler,
                 </span>
 
             </EmojiSelector>
-            <TextareaAutosize value={title} onChange={(e)=>{
-                onChangeTitle(e.target.value)
-            }} placeholder={t("PLACEHOLDER")} className='w-full resize-none appearance-none overflow-hidden bg-transparent placeholder:text-muted-foreground text-2xl font-semibold focus:outline-none max-h-28 overflow-y-auto scrollbar-thin scrollbar-thumb-muted-foreground scrollbar-track-secondary' />
-         
-
+            <TextareaAutosize
+              value={title}
+              onChange={(e) => {
+                onChangeTitle(e.target.value);
+              }}
+              placeholder={t("PLACEHOLDER")}
+              className="w-full resize-none appearance-none overflow-hidden bg-transparent placeholder:text-muted-foreground text-2xl font-semibold focus:outline-none max-h-28 overflow-y-auto scrollbar-thin scrollbar-thumb-muted-foreground scrollbar-track-secondary"
+            />
+          </div>
+          <CalendarTask date={date} onSelectedDate={onSelectedDate} />
         </div>
-
+        <div
+          onClick={() => {
+            activeWorkspace && onChangeTabHandler("workspaces");
+          }}
+          className="w-full flex gap-4 items-center justify-between bg-background/70 border border-border p-3 rounded-md shadow-sm cursor-pointer hover:bg-accent transition-colors duration-200"
+        >
+          <div className="text-muted-foreground">
+            <p>{t("WORKSPACE")}</p>
+          </div>
+          <div>
+            {activeWorkspace ? (
+              <ActiveWorkspaceInfo workspace={activeWorkspace} />
+            ) : (
+              ""
+            )}
+          </div>
         </div>
-        </>
+      </>
       )
   }
   
