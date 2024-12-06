@@ -1,6 +1,13 @@
 
 'use client'
 
+import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
+import { Input } from '@/components/ui/input'
+import { LoadingState } from '@/components/ui/loadingState'
+import Warning from '@/components/ui/warning'
 import { useToast } from '@/hooks/use-toast'
 import { SettingsWorkspace } from '@/types/extended'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -71,7 +78,73 @@ const DeleteWorkspace = ({workspace:{id,name}}: Props) => {
     }
 
   return (
-    <div>DeleteWorkspace</div>
+    <Card className="bg-background border-none shadow-none max-w-3xl">
+    <CardHeader>
+      <CardTitle>{t("TITLE")}</CardTitle>
+      <CardDescription>{t("DESC")}</CardDescription>
+    </CardHeader>
+    <CardContent className="pt-0 sm:pt-0">
+      <Form {...form}>
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="space-y-4 w-full max-w-sm"
+        >
+          <div className="space-y-2 sm:space-y-4 w-full">
+            <FormField
+              control={form.control}
+              name="workspaceName"
+              render={({ field }) => (
+                <FormItem className="w-full">
+                  <FormLabel className="text-muted-foreground uppercase text-xs">
+                    {t("LABEL")}
+                  </FormLabel>
+                  <FormControl>
+                    <Input {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button
+                //   disabled={!form.formState.isValid}
+                type="button"
+                variant={"destructive"}
+                className=""
+              >
+                {t("BTN")}
+              </Button>
+            </DialogTrigger>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle className="text-destructive">
+                  {t("DIALOG.TITLE")}
+                </DialogTitle>
+                <DialogDescription>{t("DIALOG.DESC")}</DialogDescription>
+              </DialogHeader>
+              <Warning>
+                <p>{t("DIALOG.WARNING")}</p>
+              </Warning>
+              <Button
+                disabled={isPending}
+                onClick={form.handleSubmit(onSubmit)}
+                size={"lg"}
+                variant={"destructive"}
+              >
+                {isPending ? (
+                  <LoadingState loadingText={t("DIALOG.PENDING_BTN")} />
+                ) : (
+                  t("DIALOG.BUTTON")
+                )}
+              </Button>
+            </DialogContent>
+          </Dialog>
+        </form>
+      </Form>
+    </CardContent>
+  </Card>
   )
 }
 
