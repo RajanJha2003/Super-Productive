@@ -4,6 +4,7 @@ import { SettingsWorkspace } from '@/types/extended'
 import { Layers, Users2 } from 'lucide-react';
 import React from 'react'
 import EditWorkspaceCard from './overview/Edit/EditWorkspaceCard';
+import DeleteWorkspace from './overview/DeleteWorkspace';
 
 
 interface Props{
@@ -34,6 +35,7 @@ const WorkspaceTab = ({workspace,workspaceId}:Props) => {
         <div className='py-4 sm:py-6'>
           <Separator />
         </div>
+        <DeleteWorkspace workspace={workspace} />
 
       </TabsContent>
 
