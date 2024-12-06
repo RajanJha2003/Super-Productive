@@ -66,3 +66,19 @@ export const getInitialHomeRecentActivity = async (userId: string) => {
  
    return res.json() as Promise<HomeRecentActivity[]>;
  };
+
+
+
+ export const getWorkspaceSettings=async(workspace_id:string,userId:string)=>{
+    const res=await fetch(`${domain}/api/workspace/get/settings/${workspace_id}?userId=${userId}`,{
+        method:"GET",
+        cache:"no-store"
+    });
+
+    if(!res.ok){
+        return notFound();
+    }
+
+    return res.json() as Promise<SettingsWorkspace>;
+ }
+
