@@ -4,7 +4,7 @@ import { editUserRoleSchema } from "@/schema/editUserRoleSchema";
 import { NotifyType } from "@prisma/client";
 import { NextResponse } from "next/server";
 
-export async function PUT(req:Request){
+export async function POST(req:Request){
     const session=await getAuthSession();
     if(!session?.user) return new Response("Unauthorized",{status:401});
 

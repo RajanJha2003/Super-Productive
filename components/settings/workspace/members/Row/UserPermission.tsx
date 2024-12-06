@@ -9,6 +9,10 @@ import { useTranslations } from 'next-intl';
 import { useChangeCodeToEmoji } from '@/hooks/useChangeCodeToEmoji';
 import { useMutation } from '@tanstack/react-query';
 import axios, { AxiosError, AxiosResponse } from 'axios';
+import { LoadingState } from '@/components/ui/loadingState';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { Button } from '@/components/ui/button';
+import { Check } from 'lucide-react';
 
 interface Props {
     userRole: UserPermissionType;
@@ -70,7 +74,125 @@ const UserPermission = ({userRole,user,workspaceId,onSetworkspacesubscribers}:Pr
     });
   
     return (
-    <div>UserPermission</div>
+    <div>
+        {
+            isPending ? (
+                <div className='flex items-center'>
+                    <LoadingState loadingText={t("WAIT")} />
+
+                </div>
+                
+            ):(
+                <>
+                {
+                    userRole==="OWNER"?(
+                        <div className='flex gap-1 h-9 items-center px-3 text-sm font-medium'>
+                             <span className='hidden sm:inline'>
+                                {userRoleEmojis[0]}
+                                </span> 
+                                <span>
+                                    {t("OWNER.TITLE")}
+                                </span>
+                         </div>
+
+                    ):(
+                        <DropdownMenu modal={false}>
+                            <DropdownMenuTrigger asChild>
+                                <Button variant={"ghost"} size={"sm"} className='flex gap-1 items-center'>
+                                {userRole === "ADMIN" && (
+                    <p className="flex gap-1 items-center">
+                      <span className="hidden sm:inline">
+                        {userRoleEmojis[1]}
+                      </span>{" "}
+                      <span>{t("ADMIN.TITLE")}</span>
+                    </p>
+                  )}
+                  {userRole === "CAN_EDIT" && (
+                    <p className="flex gap-1 items-center">
+                      <span className="hidden sm:inline">
+                        {userRoleEmojis[2]}
+                      </span>{" "}
+                      <span>{t("EDITOR.TITLE")}</span>
+                    </p>
+                  )}
+                  {userRole === "READ_ONLY" && (
+                    <p className="flex gap-1 items-center">
+                      <span className="hidden sm:inline">
+                        {userRoleEmojis[3]}
+                      </span>{" "}
+                      <span>{t("VIEWER.TITLE")}</span>
+                    </p>
+                  )}
+                                </Button>
+
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent align="end" className="max-w-xs">
+                <DropdownMenuItem
+                  onClick={() => {
+                    editUserRole("ADMIN");
+                  }}
+                  className="cursor-pointer"
+                >
+                  <div className="flex flex-col gap-1">
+                    <div className="flex items-center gap-2">
+                      <div className="flex items-center gap-1">
+                        <span>{userRoleEmojis[1]}</span>{" "}
+                        <span>{t("ADMIN.TITLE")}</span>
+                      </div>
+                      {userRole === "ADMIN" && <Check size={18} />}
+                    </div>
+                    <p className="text-muted-foreground text-xs sm:text-sm">
+                      {t("ADMIN.DESC")}
+                    </p>
+                  </div>
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={() => {
+                    editUserRole("CAN_EDIT");
+                  }}
+                  className="cursor-pointer"
+                >
+                  <div className="flex flex-col gap-1">
+                    <div className="flex items-center gap-2">
+                      <div className="flex items-center gap-1">
+                        <span>{userRoleEmojis[2]}</span>{" "}
+                        <span>{t("EDITOR.TITLE")}</span>
+                      </div>
+                      {userRole === "CAN_EDIT" && <Check size={18} />}
+                    </div>
+                    <p className="text-muted-foreground text-xs sm:text-sm">
+                      {t("EDITOR.DESC")}
+                    </p>
+                  </div>
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={() => {
+                    editUserRole("READ_ONLY");
+                  }}
+                  className="cursor-pointer"
+                >
+                  <div className="flex flex-col gap-1">
+                    <div className="flex items-center gap-2">
+                      <div className="flex items-center gap-1">
+                        <span>{userRoleEmojis[3]}</span>{" "}
+                        <span>{t("VIEWER.TITLE")}</span>
+                      </div>
+                      {userRole === "READ_ONLY" && <Check size={18} />}
+                    </div>
+                    <p className="text-muted-foreground text-xs sm:text-sm">
+                      {t("VIEWER.DESC")}
+                    </p>
+                  </div>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+
+                        </DropdownMenu>
+                    )
+                }
+                </>
+            )
+        }
+    </div>
   )
 }
 
