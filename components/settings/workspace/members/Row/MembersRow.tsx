@@ -5,6 +5,7 @@ import { SubscriptionUser } from '@/types/extended';
 import { UserPermission as UserPermissionType } from '@prisma/client';
 import React from 'react'
 import UserPermission from './UserPermission';
+import MoreOptions from './MoreOptions';
 
 interface Props{
     userRole:UserPermissionType,
@@ -37,6 +38,10 @@ const MembersRow = ({userRole,user,workspaceId,onSetworkspacesubscribers}:Props)
       userRole={userRole}
       onSetworkspacesubscribers={onSetworkspacesubscribers}
     />
+    <MoreOptions workspaceId={workspaceId} userId={user.id}
+    userRole={userRole} onSetworkspacesubscribers={onSetworkspacesubscribers}
+    />
+
 
    
   </li>
