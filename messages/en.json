@@ -818,7 +818,8 @@
         },
         "INFO": "Changing the color only affects the appearance of the workspace icon only when no image has been added",
         "BTN": "Update",
-        "BTN_PENDING": "Updating"
+        "BTN_PENDING": "Updating",
+        "MISSING_MESSAGE": "Please fill in all required fields"
       },
       "DELETE": {
         "TITLE": "Delete the workspace",

@@ -24,7 +24,7 @@ const EditWorkspaceCard = ({workspace}:Props) => {
         </CardHeader>
         <CardContent className='space-y-4'>
             <EditWorkspaceImage workspace={workspace} />
-            <EditWorkspaceDataForm />
+            <EditWorkspaceDataForm workspace={workspace} />
 
 
 
