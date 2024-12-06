@@ -4,6 +4,7 @@ import { UserAvatar } from '@/components/ui/user-avatar';
 import { SubscriptionUser } from '@/types/extended';
 import { UserPermission as UserPermissionType } from '@prisma/client';
 import React from 'react'
+import UserPermission from './UserPermission';
 
 interface Props{
     userRole:UserPermissionType,
@@ -28,7 +29,12 @@ const MembersRow = ({userRole,user,workspaceId,onSetworkspacesubscribers}:Props)
             <p className='font-semibold'>{user.username}</p>
 
         </div>
-        
+        <UserPermission workspaceId={workspaceId}
+         userRole={userRole} 
+         user={user}
+         onSetworkspacesubscribers={onSetworkspacesubscribers}
+         />
+
     </li>
   )
 }
