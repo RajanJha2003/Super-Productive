@@ -48,49 +48,52 @@ const MembersTable = ({ workspace, workspaceId }: Props) => {
     setWorkspacesubscribers(sortedSubscribers);
   };
   return (
-   <div className='w-full flex flex-col border rounded-sm'>
-    <div className='grid grid-cols-3 grid-rows-1 gap-4 p-4 border-b items-center'>
-      {
-        currentSort==="desc" ? (
-          <Button className='flex gap-1 items-center w-fit' 
-          size={"sm"} variant={"ghost"}   
-          onClick={()=>onSort("asc")}>
-            <p className='font-semibold text-sm'>{t("USERNAME")}</p>
+    <div className="w-full flex flex-col border rounded-sm">
+      <div className="grid grid-cols-3 grid-rows-1 gap-4 p-4 border-b items-center">
+        {currentSort === "desc" ? (
+          <Button
+            className="flex gap-1 items-center w-fit"
+            size={"sm"}
+            variant={"ghost"}
+            onClick={() => {
+              onSort("asc");
+            }}
+          >
+            <p className="font-semibold text-sm">{t("USERNAME")}</p>
             <ChevronDown size={16} />
-
           </Button>
-        ):(
-          <Button className='flex gap-1 items-center w-fit' 
-          size={"sm"} variant={"ghost"}   
-          onClick={()=>onSort("desc")}>
-            <p className='font-semibold text-sm'>{t("USERNAME")}</p>
+        ) : (
+          <Button
+            className="flex gap-1 items-center w-fit"
+            size={"sm"}
+            variant={"ghost"}
+            onClick={() => {
+              onSort("desc");
+            }}
+          >
+            <p className="font-semibold text-sm">{t("USERNAME")}</p>
             <ChevronUp size={16} />
-
           </Button>
-        )
-      }
-
-      <p className='text-sm font-semibold md:hidden'>{t("PERMISSION_SMALL")}</p>
-      <p className='text-sm font-semibold md:inline'>{t("PERMISSION_BIG")}</p>
-
-    </div>
-    <ul>
-      {
-        workspacesubscribers.map((subscriber)=>(
+        )}
+        <p className="text-sm font-semibold md:hidden">
+          {t("PERMISSION_SMALL")}
+        </p>
+        <p className="font-semibold text-sm hidden md:inline">
+          {t("PERMISSION_BIG")}
+        </p>
+      </div>
+      <ul>
+        {workspacesubscribers.map((subscriber) => (
           <MembersRow
-          key={subscriber.user.id}
-          user={subscriber.user}
-          userRole={subscriber.userRole}
-          workspaceId={workspaceId}
-          onSetworkspacesubscribers={setWorkspacesubscribers}
-        />
-
-        ))
-      }
-    </ul>
-
-
-   </div>
+            key={subscriber.user.id}
+            user={subscriber.user}
+            userRole={subscriber.userRole}
+            workspaceId={workspaceId}
+            onSetworkspacesubscribers={setWorkspacesubscribers}
+          />
+        ))}
+      </ul>
+    </div>
   )
 }
 
