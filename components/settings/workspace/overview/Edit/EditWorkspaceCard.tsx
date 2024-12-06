@@ -3,6 +3,7 @@ import { SettingsWorkspace } from '@/types/extended'
 import { useTranslations } from 'next-intl'
 import React from 'react'
 import EditWorkspaceImage from './EditWorkspaceImage'
+import EditWorkspaceDataForm from './EditWorkspaceDataForm'
 
 
 interface Props{
@@ -23,6 +24,7 @@ const EditWorkspaceCard = ({workspace}:Props) => {
         </CardHeader>
         <CardContent className='space-y-4'>
             <EditWorkspaceImage workspace={workspace} />
+            <EditWorkspaceDataForm />
 
 
 
