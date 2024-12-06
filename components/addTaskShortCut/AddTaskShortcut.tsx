@@ -18,7 +18,7 @@ import Link from 'next/link';
 import { ClientError } from '../error/ClientError';
 import { LoadingState } from '../ui/loadingState';
 import MainTab from './MainTab';
-import Workspaces from './Workspaces';
+import {Workspaces} from './Workspaces';
 
 
 interface Props{
