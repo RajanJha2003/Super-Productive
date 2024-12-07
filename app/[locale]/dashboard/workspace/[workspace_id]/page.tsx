@@ -3,9 +3,23 @@ import { FilterByUsersAndTagsInWorkspaceProvider } from '@/context/FilterByUsers
 import React from 'react'
 
 const page = () => {
+
+
+  
   return (
    <FilterByUsersAndTagsInWorkspaceProvider>
-    <DashboardHeader />
+    <DashboardHeader addManualRoutes={[
+      {
+        name:"DASHBOARD",
+        href:"/dashboard",
+        useTranslate:true
+      },
+      {
+        name:"DASHBOARD",
+        href:"/dashboard",
+        useTranslate:true
+      }
+    ]} />
    </FilterByUsersAndTagsInWorkspaceProvider>
   )
 }

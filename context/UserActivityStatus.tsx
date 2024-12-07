@@ -16,6 +16,7 @@ import {
   useState,
 } from "react";
 
+// Context Types
 interface Props {
   children: React.ReactNode;
 }
@@ -33,24 +34,24 @@ interface UserActivityStatus {
   refetch: () => void;
 }
 
+// Create Context
 export const UserActivityStatusCtx = createContext<UserActivityStatus | null>(
   null
 );
 
+// Provider
 export const UserActivityStatusProvider = ({ children }: Props) => {
   const { toast } = useToast();
   const m = useTranslations("MESSAGES");
 
-  const [allInactiveUsers, setAllInactiveUsers] = useState<
-    UserActiveItemList[]
-  >([]);
-  const [allActiveUsers, setAllActiveUsers] = useState<UserActiveItemList[]>(
+  const [allInactiveUsers, setAllInactiveUsers] = useState<UserActiveItemList[]>(
     []
   );
+  const [allActiveUsers, setAllActiveUsers] = useState<UserActiveItemList[]>([]);
 
   const params = useParams();
   const session = useSession();
-  const workspaceId = params.workspace_id ? params.workspace_id : null;
+  const workspaceId = params.workspace_id ?? null;
 
   const {
     data: users,
@@ -68,9 +69,7 @@ export const UserActivityStatusProvider = ({ children }: Props) => {
         throw new Error(error);
       }
 
-      const response = await res.json();
-
-      return response;
+      return await res.json();
     },
     enabled: !!workspaceId,
     queryKey: ["getUserActivityStatus", workspaceId],
@@ -81,10 +80,10 @@ export const UserActivityStatusProvider = ({ children }: Props) => {
 
     const supabaseClient = supabase();
     const channel = supabaseClient.channel(`activity-status`);
+
     channel
       .on("presence", { event: "sync" }, () => {
         const userIds: string[] = [];
-
         const activeUsers: UserActiveItemList[] = [];
         const inactiveUsers: UserActiveItemList[] = [];
 
@@ -95,14 +94,13 @@ export const UserActivityStatusProvider = ({ children }: Props) => {
 
         const uniqueIds = new Set(userIds);
 
-        users &&
-          users.forEach((user) => {
-            if (uniqueIds.has(user.id)) {
-              activeUsers.push(user);
-            } else {
-              inactiveUsers.push(user);
-            }
-          });
+        users?.forEach((user) => {
+          if (uniqueIds.has(user.id)) {
+            activeUsers.push(user);
+          } else {
+            inactiveUsers.push(user);
+          }
+        });
 
         setAllActiveUsers(activeUsers);
         setAllInactiveUsers(inactiveUsers);
@@ -111,21 +109,19 @@ export const UserActivityStatusProvider = ({ children }: Props) => {
         if (status === "SUBSCRIBED") {
           await channel.track({
             online_at: new Date().toISOString(),
-            userId: session.data.user.id,
+            userId: session.data?.user.id,
           });
         }
       });
   }, [session.data, users]);
 
   const getActiveUsersRoleType = useCallback(
-    (role: UserPermission) => {
-      return allActiveUsers.filter((user) => user.userRole === role);
-    },
+    (role: UserPermission) => allActiveUsers.filter((user) => user.userRole === role),
     [allActiveUsers]
   );
 
   const checkIfUserIsActive = useCallback(
-    (id: string) => !!allActiveUsers?.find((user) => user.id === id),
+    (id: string) => !!allActiveUsers.find((user) => user.id === id),
     [allActiveUsers]
   );
 
@@ -147,9 +143,11 @@ export const UserActivityStatusProvider = ({ children }: Props) => {
   );
 };
 
+// Hook
 export const useUserActivityStatus = () => {
   const ctx = useContext(UserActivityStatusCtx);
-  if (!ctx) throw new Error("invalid use");
-
+  if (!ctx) {
+    throw new Error("useUserActivityStatus must be used within a UserActivityStatusProvider.");
+  }
   return ctx;
 };
