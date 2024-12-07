@@ -1,8 +1,12 @@
+import DashboardHeader from '@/components/header/DashboardHeader'
+import { FilterByUsersAndTagsInWorkspaceProvider } from '@/context/FilterByUsersAndTagsInWorkspace'
 import React from 'react'
 
 const page = () => {
   return (
-    <div>page</div>
+   <FilterByUsersAndTagsInWorkspaceProvider>
+    <DashboardHeader />
+   </FilterByUsersAndTagsInWorkspaceProvider>
   )
 }
 

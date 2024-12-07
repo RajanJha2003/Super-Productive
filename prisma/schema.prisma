@@ -9,33 +9,36 @@ generator client {
 }
  
 model User {
-  id            String          @id @default(cuid())
-  name          String?
-  username      String @unique
-  surname       String?
-  email         String?          @unique
-  emailVerified DateTime?
-  hashedPassword String?
-  image         String?
-  completedOnboarding Boolean @default(false)
-  accounts      Account[]
-  sessions      Session[]
-  createdWorkspaces Workspace[] @relation("CreatedBy")
-  subscriptions Subscription[]
-  useCase UseCase?
-  createdTasks Task[] @relation("TaskCreatedByUser")
-  updatedTasks Task[] @relation("TaskUpdatedByUser")
-  savedTask savedTask[]
-  createdMindMaps MindMap[] @relation("MindMapCreatedByUser")
-  updatedMindMaps MindMap[] @relation("MindMapUpdatedByUser")
-  savedMindMaps savedMindMaps[]
-  pomodoroSettings PomodoroSettings[]
-  assignedToTask assignedToTask[]
-  assignedToMindMap assignedToMindMap[]
-  userNotifications Notification[] @relation("NotifyUser")
+  id                  String          @id @default(cuid())
+  name                String?
+  username            String          @unique
+  surname             String?
+  email               String?         @unique
+  emailVerified       DateTime?
+  hashedPassword      String?
+  image               String?
+  completedOnboarding Boolean         @default(false)
+  lastTimeActive      DateTime?
+
+  accounts            Account[]
+  sessions            Session[]
+  createdWorkspaces   Workspace[]     @relation("CreatedBy")
+  subscriptions       Subscription[]
+  useCase             UseCase?
+  createdTasks        Task[]          @relation("TaskCreatedByUser")
+  updatedTasks        Task[]          @relation("TaskUpdatedByUser")
+  savedTask           savedTask[]
+  createdMindMaps     MindMap[]       @relation("MindMapCreatedByUser")
+  updatedMindMaps     MindMap[]       @relation("MindMapUpdatedByUser")
+  savedMindMaps       savedMindMaps[]
+  pomodoroSettings    PomodoroSettings[]
+  assignedToTask      assignedToTask[]
+  assignedToMindMap   assignedToMindMap[]
+  userNotifications   Notification[]  @relation("NotifyUser")
   userCreatedNotifications Notification[] @relation("NotifyCreator")
-  messages Message[]
+  messages            Message[]
 }
+
 
 model savedMindMaps {
   id String @id @default(cuid())
