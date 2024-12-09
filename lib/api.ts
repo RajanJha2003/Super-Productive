@@ -1,5 +1,5 @@
-import { HomeRecentActivity, SettingsWorkspace } from "@/types/extended";
-import { Workspace } from "@prisma/client";
+import { ExtendedWorkspace, HomeRecentActivity, SettingsWorkspace } from "@/types/extended";
+import { UserPermission, Workspace } from "@prisma/client";
 import { notFound } from "next/navigation";
 import { ACTIVITY_PER_PAGE } from "./constants";
 
@@ -87,4 +87,38 @@ export const getInitialHomeRecentActivity = async (userId: string) => {
  
    return res.json() as Promise<SettingsWorkspace>;
  };
+
+
+
+ export const gertWorkspaceWithChatId=async(workspace_id:string,userId:string)=>{
+
+  const res=await fetch(`${domain}/api/workspace/get/workspace_with_chat/${workspace_id}?userId=${userId}`,{
+    method:"GET",
+    cache:"no-store"
+  })
+
+  if(!res.ok){
+    return notFound();
+  }
+
+
+  return res.json() as Promise<ExtendedWorkspace>;
+
+ }
+
+
+ export const getUserWorkspaceRole=async(workspace_id:string,userId:string)=>{
+  const res=await fetch(`${domain}/api/workspace/get/user_role?workspaceId=${workspace_id}&userId=${userId}`,{
+    method:"GET",
+    cache:"no-store"
+  })
+
+  if(!res.ok){
+    return notFound();
+  }
+
+
+  return res.json() as Promise<UserPermission>;
+
+ }
 
