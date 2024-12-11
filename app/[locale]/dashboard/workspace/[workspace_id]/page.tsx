@@ -1,4 +1,6 @@
 import DashboardHeader from '@/components/header/DashboardHeader'
+import InviteUsers from '@/components/inviteUsers/InviteUsers';
+import LeaveWorkspace from '@/components/workspaceMainPage/shortcuts/leaveWorkspace/LeaveWorkspace';
 import { FilterByUsersAndTagsInWorkspaceProvider } from '@/context/FilterByUsersAndTagsInWorkspace'
 import { gertWorkspaceWithChatId, getUserWorkspaceRole } from '@/lib/api';
 import { checkIfUserCompletedOnboarding } from '@/lib/checkIfUserCompletedOnboarding';
@@ -34,14 +36,21 @@ const page = async({params:{workspace_id}}:Params) => {
         useTranslate:true
       },
       {
-        name:"DASHBOARD",
-        href:"/dashboard",
-        useTranslate:true
+        name:workspace.name,
+        href:`/dashboard/workspace/${workspace_id}`,
+        
       }
-    ]} />
-    {
+    ]}> {
+      userRole==="ADMIN" || userRole==="OWNER" && (
+        <InviteUsers workspace={workspace} />
+      )
       
     }
+    {
+      userRole!=="OWNER" && <LeaveWorkspace workspace={workspace} />
+    }
+    </DashboardHeader>
+   
    </FilterByUsersAndTagsInWorkspaceProvider>
   )
 }
