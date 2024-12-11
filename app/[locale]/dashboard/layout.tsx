@@ -6,7 +6,7 @@ import React from 'react'
 
 const layout = ({children}: {children: React.ReactNode}) => {
   return (
-   <UserActivityStatusProvider>
+   
     <UserEditableWorkspacesProvider>
      <ToggleSidebarProvider>
       <div className="flex h-0 min-h-screen w-full overflow-hidden">
@@ -17,7 +17,7 @@ const layout = ({children}: {children: React.ReactNode}) => {
           </div>
     </ToggleSidebarProvider>
    </UserEditableWorkspacesProvider>
-   </UserActivityStatusProvider>
+
   )
 }
 

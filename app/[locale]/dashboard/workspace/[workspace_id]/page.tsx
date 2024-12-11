@@ -2,6 +2,7 @@ import AddTaskShortcut from '@/components/addTaskShortCut/AddTaskShortcut';
 import DashboardHeader from '@/components/header/DashboardHeader'
 import InviteUsers from '@/components/inviteUsers/InviteUsers';
 import LeaveWorkspace from '@/components/workspaceMainPage/shortcuts/leaveWorkspace/LeaveWorkspace';
+import ShortcutContainer from '@/components/workspaceMainPage/shortcuts/ShortcutContainer';
 import { FilterByUsersAndTagsInWorkspaceProvider } from '@/context/FilterByUsersAndTagsInWorkspace'
 import { gertWorkspaceWithChatId, getUserWorkspaceRole } from '@/lib/api';
 import { checkIfUserCompletedOnboarding } from '@/lib/checkIfUserCompletedOnboarding';
@@ -29,8 +30,9 @@ const page = async({params:{workspace_id}}:Params) => {
 
   
   return (
-   <FilterByUsersAndTagsInWorkspaceProvider>
-    <DashboardHeader addManualRoutes={[
+  //  <FilterByUsersAndTagsInWorkspaceProvider>
+  <>
+   <DashboardHeader addManualRoutes={[
       {
         name:"DASHBOARD",
         href:"/dashboard",
@@ -52,12 +54,15 @@ const page = async({params:{workspace_id}}:Params) => {
     }
     <AddTaskShortcut userId={session.user.id} />
     </DashboardHeader>
-    <main className='flex flex-col gsp-2 w-full'>
-      
+    <main className='flex flex-col gap-2 w-full'>
+      <ShortcutContainer workspace={workspace} userRole={userRole} />
+
 
     </main>
+  </>
    
-   </FilterByUsersAndTagsInWorkspaceProvider>
+   
+  //  </FilterByUsersAndTagsInWorkspaceProvider>
   )
 }
 
