@@ -1,6 +1,7 @@
 import AddTaskShortcut from '@/components/addTaskShortCut/AddTaskShortcut';
 import DashboardHeader from '@/components/header/DashboardHeader'
 import InviteUsers from '@/components/inviteUsers/InviteUsers';
+import FilterContainer from '@/components/workspaceMainPage/filter/FilterContainer';
 import LeaveWorkspace from '@/components/workspaceMainPage/shortcuts/leaveWorkspace/LeaveWorkspace';
 import ShortcutContainer from '@/components/workspaceMainPage/shortcuts/ShortcutContainer';
 import { FilterByUsersAndTagsInWorkspaceProvider } from '@/context/FilterByUsersAndTagsInWorkspace'
@@ -56,7 +57,7 @@ const page = async({params:{workspace_id}}:Params) => {
     </DashboardHeader>
     <main className='flex flex-col gap-2 w-full'>
       <ShortcutContainer workspace={workspace} userRole={userRole} />
-
+      <FilterContainer sessionUserId={session.user.id} />
 
     </main>
   </>
