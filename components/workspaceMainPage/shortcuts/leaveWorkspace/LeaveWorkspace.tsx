@@ -1,9 +1,14 @@
 "use client";
 
+import { Button } from '@/components/ui/button';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { LoadingState } from '@/components/ui/loadingState';
+import Warning from '@/components/ui/warning';
 import { useToast } from '@/hooks/use-toast';
 import { Workspace } from '@prisma/client'
 import { useMutation } from '@tanstack/react-query';
 import axios, { AxiosError } from 'axios';
+import { DoorOpen } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
 import React,{useState} from 'react'
@@ -22,7 +27,7 @@ const LeaveWorkspace = ({workspace:{id,name}}:Props) => {
     const router=useRouter();
 
 
-    const {mutate:deleteWorkspace,isPending}=useMutation({
+    const {mutate:leaveFromWorkspace,isPending}=useMutation({
       mutationFn:async()=>{
         await axios.post(`/api/workspace/leave`,{id})
             
@@ -48,7 +53,47 @@ const LeaveWorkspace = ({workspace:{id,name}}:Props) => {
 
 
   return (
-    <div>LeaveWorkspace</div>
+    <Dialog open={open} onOpenChange={setOpen}>
+    <DialogTrigger asChild>
+      <Button
+        onClick={() => setOpen(true)}
+        variant={"ghost"}
+        size={"icon"}
+        className="text-sm md:text-base min-w-[10rem] sm:min-w-[13rem] w-1/5 h-14 p-2 rounded-lg shadow-sm flex justify-center items-center gap-1 md:gap-2"
+      >
+        <span className="hidden sm:inline">{t("LEAVE")}</span>
+        <DoorOpen size={18} />
+      </Button>
+    </DialogTrigger>
+    <DialogContent>
+      <DialogHeader>
+        <DialogTitle>
+          <span>{t("TITLE")}</span> <span>{name}</span>
+        </DialogTitle>
+        <DialogDescription>{t("DESC")}</DialogDescription>
+      </DialogHeader>
+      <Warning>
+        <p>{t("WARNING")}</p>
+      </Warning>
+
+      <Button
+        disabled={isPending}
+        onClick={() => {
+          leaveFromWorkspace();
+        }}
+        className="flex gap-1 items-center"
+      >
+        {isPending ? (
+          <LoadingState loadingText={t("LOADING_BTN")} />
+        ) : (
+          <>
+            <DoorOpen size={18} />
+            {t("LEAVE")}
+          </>
+        )}
+      </Button>
+    </DialogContent>
+  </Dialog>
   )
 }
 
