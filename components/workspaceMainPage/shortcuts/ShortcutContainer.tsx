@@ -7,6 +7,10 @@ import { ExtendedWorkspace } from '@/types/extended';
 import { UserPermission } from '@prisma/client';
 import React from 'react'
 import PermissionIndicator from './permissionIndicator/PermissionIndicator';
+import {ShortcutContainerLinkItem} from './ShortcutContainerLinkItem';
+import { MessagesSquare, PencilRuler, Workflow } from 'lucide-react';
+import LeaveWorkspace from './leaveWorkspace/LeaveWorkspace';
+import {ShortcutContainerBtnItem} from './ShortcutContainerBtnItem';
 
 
 interface Props{
@@ -21,7 +25,27 @@ const ShortcutContainer = ({workspace,userRole}:Props) => {
     <ScrollArea className='w-full'>
       <div className='flex w-max space-x-4 pb-4 mt-4'>
         <PermissionIndicator userRole={userRole} workspaceName={workspace.name} />
-
+        <ShortcutContainerLinkItem
+          userRole={userRole}
+          Icon={MessagesSquare}
+          title="Group chat"
+          href={`/dashboard/workspace/${workspace.id}/chat/${workspace.conversation.id}`}
+        />
+        <ShortcutContainerBtnItem
+          userRole={userRole}
+          Icon={PencilRuler}
+          title="New task"
+          isLoading={isNewTaskLoading}
+          onClick={newTask}
+        />
+        <ShortcutContainerBtnItem
+          userRole={userRole}
+          Icon={Workflow}
+          title="New mind map"
+          isLoading={isNewMindMapLoading}
+          onClick={newMindMap}
+        />
+        {userRole !== "OWNER" && <LeaveWorkspace workspace={workspace} />}
       </div>
 
     </ScrollArea>
