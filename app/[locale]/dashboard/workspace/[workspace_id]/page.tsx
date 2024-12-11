@@ -1,3 +1,4 @@
+import AddTaskShortcut from '@/components/addTaskShortCut/AddTaskShortcut';
 import DashboardHeader from '@/components/header/DashboardHeader'
 import InviteUsers from '@/components/inviteUsers/InviteUsers';
 import LeaveWorkspace from '@/components/workspaceMainPage/shortcuts/leaveWorkspace/LeaveWorkspace';
@@ -49,7 +50,12 @@ const page = async({params:{workspace_id}}:Params) => {
     {
       userRole!=="OWNER" && <LeaveWorkspace workspace={workspace} />
     }
+    <AddTaskShortcut userId={session.user.id} />
     </DashboardHeader>
+    <main className='flex flex-col gsp-2 w-full'>
+      
+
+    </main>
    
    </FilterByUsersAndTagsInWorkspaceProvider>
   )
