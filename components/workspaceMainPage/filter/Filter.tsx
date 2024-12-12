@@ -6,6 +6,7 @@ import { useFilterByUsersAndTagsInWorkspace } from '@/context/FilterByUsersAndTa
 import { FilterIcon } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import React from 'react'
+import CommandContainer from './FilterCommand/CommandContainer';
 
 
 interface Props{
