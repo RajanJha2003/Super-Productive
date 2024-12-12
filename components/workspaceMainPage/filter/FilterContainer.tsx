@@ -3,7 +3,7 @@
 import { useFilterByUsersAndTagsInWorkspace } from '@/context/FilterByUsersAndTagsInWorkspace';
 import React from 'react'
 import Filter from './Filter';
-import ActiveFilteredUser from './activeFilteredUsersAndTags/ActiveFilteredUser';
+import {ActiveFilteredUser} from './activeFilteredUsersAndTags/ActiveFilteredUser';
 
 
 interface Props{
