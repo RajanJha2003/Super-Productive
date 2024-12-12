@@ -2,15 +2,15 @@
 
 import { FilterUser, WorkspaceRecentActivity } from "@/types/extended";
 import { useQuery } from "@tanstack/react-query";
-
+import  RecentActivityItem  from "./RecentActivityItem";
 import { Tag } from "@prisma/client";
 import { useEffect, useMemo, useState } from "react";
 import { useFilterByUsersAndTagsInWorkspace } from "@/context/FilterByUsersAndTagsInWorkspace";
 import { ClientError } from "@/components/error/ClientError";
 import { LoadingState } from "@/components/ui/loadingState";
-
+import { NoFilteredData } from "./NoFilteredData";
+import { NoData } from "./NoData";
 import { useTranslations } from "next-intl";
-import RecentActivityItem from "./RecentActivityItem";
 
 interface Props {
   userId: string;
@@ -115,10 +115,10 @@ export const RecentActivityContainer = ({ userId, workspaceId }: Props) => {
               <RecentActivityItem key={activity.id} activity={activity} />
             ))
           ) : (
-           null
+            <NoFilteredData />
           )
         ) : (
-       null
+          <NoData />
         )}
       </div>
     );
