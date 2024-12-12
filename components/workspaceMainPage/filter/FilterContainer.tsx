@@ -4,6 +4,8 @@ import { useFilterByUsersAndTagsInWorkspace } from '@/context/FilterByUsersAndTa
 import React from 'react'
 import Filter from './Filter';
 import {ActiveFilteredUser} from './activeFilteredUsersAndTags/ActiveFilteredUser';
+import { ActiveFilteredTag } from './activeFilteredUsersAndTags/ActiveFilteredTag';
+import { Clear } from './Clear';
 
 
 interface Props{
@@ -20,6 +22,10 @@ const FilterContainer = ({sessionUserId}:Props) => {
         <ActiveFilteredUser key={user.id} id={user.id} image={user.image} username={user.username} />
       ))
     }
+     {filterTags.map((tag) => (
+        <ActiveFilteredTag tag={tag} key={tag.id} />
+      ))}
+      {(filterAssignedUsers.length > 0 || filterTags.length > 0) && <Clear />}
 
     </div>
   )
