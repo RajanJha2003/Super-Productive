@@ -95,8 +95,36 @@ const AssignedToTaskSelector = ({className,plusIconSize,dropdownSizeOffset,works
                         />
                     )
                    }
-        </DropdownMenuContent>
+
+{isGettingWorkspaces && (
+          <div className="p-3 text-sm flex justify-center items-center flex-col gap-4">
+            <p>{t("ERROR_MSG")}</p>
+            <Button
+              className="w-full"
+              size={"sm"}
+              variant={"default"}
+              onClick={() => refetchWorkspaces()}
+            >
+              {t("ERROR_BTN")}
+            </Button>
+          </div>
+        )}
+        {isErrorGettingAssignedUser && (
+          <div className="p-3 text-sm flex justify-center items-center flex-col gap-4">
+            <p>{t("ERROR_MSG")}</p>
+            <Button
+              className="w-full"
+              size={"sm"}
+              variant={"default"}
+              onClick={() => refetchAssigned()}
+            >
+              {t("ERROR_BTN")}
+            </Button>
+          </div>
+        )}
+      </DropdownMenuContent>
     </DropdownMenu>
+      
   )
 }
 
