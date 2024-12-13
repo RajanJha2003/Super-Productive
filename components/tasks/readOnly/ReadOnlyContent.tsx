@@ -8,6 +8,7 @@ import { Star } from 'lucide-react';
 import { useFormatter, useTranslations } from 'next-intl';
 import React, { useState } from 'react'
 import TaskOptions from './TaskOptions';
+import AssignedToTaskSelector from '../assignToTask/AssignedToTaskSelector';
 
 
 
@@ -61,6 +62,10 @@ const ReadOnlyContent = ({task,isSavedByUser,userRole}:Props) => {
                 />
 
               </div>
+
+            </div>
+            <div className='w-full gap-1 flex flex-wrap flex-row'>
+              <AssignedToTaskSelector taskId={task.id} workspaceId={task.workspaceId} />
 
             </div>
 
