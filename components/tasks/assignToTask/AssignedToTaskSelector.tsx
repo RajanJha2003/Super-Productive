@@ -1,11 +1,17 @@
 "use client";
 
+import { Button } from '@/components/ui/button';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { LoadingState } from '@/components/ui/loadingState';
 import { useUserEditableWorkspaces } from '@/context/UserEditableWorkspaces';
+import { cn } from '@/lib/utils';
 import { UsersAssignedToTaskInfo } from '@/types/extended';
 import { useQuery } from '@tanstack/react-query';
+import { User2 } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react'
+import {CommandContainer} from './CommandContainer';
 
 interface Props {
     className?: string;
@@ -57,7 +63,40 @@ const AssignedToTaskSelector = ({className,plusIconSize,dropdownSizeOffset,works
     const router = useRouter();
  
     return (
-    <div>AssignedToTaskSelector</div>
+    <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+            <Button className={cn(`w-fit h-fit text-xs justify-start text-left font-normal px-2.5 py-0.5`,className)} 
+            
+            variant={"outline"} size={"sm"}>
+                <User2 size={plusIconSize} className='mr-1' />
+                <span>{t("TRIGGER")}</span>
+
+                </Button>
+
+        </DropdownMenuTrigger>
+        <DropdownMenuContent sideOffset={dropdownSizeOffset && dropdownSizeOffset}>
+                   {
+                    isLoadingInfo || (
+                        isGettingWorkspaces && (
+                            <div className='p-3 flex justify-center items-center '>
+                                <LoadingState />
+
+                            </div>
+                        )
+                    )
+                   }
+                   {
+                    !isLoadingInfo && assignedUsersInfo && !isGettingWorkspaces && (
+                        <CommandContainer 
+                        users={assignedUsersInfo.subscribers}
+                        taskId={taskId}
+                        workspaceId={workspaceId}
+                        canEdit={canEdit}
+                        />
+                    )
+                   }
+        </DropdownMenuContent>
+    </DropdownMenu>
   )
 }
 
