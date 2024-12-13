@@ -28,6 +28,10 @@ const ReadOnlyContent = ({task,isSavedByUser,userRole}:Props) => {
   const dateTime=new Date(task.updatedAt);
   const now=new Date();
 
+  const onSetIsSaved = () => {
+    setIsSaved((prev) => !prev);
+  };
+
 
 
   return (
@@ -48,7 +52,13 @@ const ReadOnlyContent = ({task,isSavedByUser,userRole}:Props) => {
                  </p>
               </div>
               <div className='absolute top-5 right-5 sm:static'>
-                <TaskOptions />
+              <TaskOptions
+                  onSetIsSaved={onSetIsSaved}
+                  isSaved={isSaved}
+                  taskId={task.id}
+                  workspaceId={task.workspaceId}
+                  userRole={userRole}
+                />
 
               </div>
 
